@@ -1,0 +1,139 @@
+body, html {
+  margin: 0; /* Loại bỏ margin mặc định của body */
+  padding: 0; /* Loại bỏ padding mặc định của body */
+}
+
+.navbar {
+  width: 98%; /* Chiều rộng 100% */
+  position: fixed; /* Giữ thanh điều hướng ở vị trí cố định */
+  display: flex;
+  justify-content: space-between; /* Căn đều không gian giữa logo và menu */
+  align-items: center; /* Căn giữa */
+  padding: 15px 20px;
+  background-color: black; /* Thanh navbar màu đen */
+  z-index: 2000; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
+
+}
+
+.logo {
+  margin-right: 20px; /* Khoảng cách giữa logo và menu */
+}
+
+.logo img {
+  width: 180px; /* Kích thước logo */
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center; /* Căn giữa các liên kết */
+}
+
+.nav-links li {
+  margin: 0 25px; /* Khoảng cách giữa các menu */
+}
+
+.nav-links a {
+  margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+  color: white; /* Màu chữ trắng */
+  text-decoration: none; /* Bỏ gạch chân */
+  font-family: 'Montserrat', sans-serif; /* Font Montserrat */
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.nav-links a:hover {
+  color: #ccc; /* Màu chữ khi hover */
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.user-actions .icon {
+  color: white; /* Icon màu trắng */
+  font-size: 24px; /* Kích thước icon */
+  margin-right: 15px; /* Khoảng cách giữa icon giỏ hàng và chữ "Đăng nhập" */
+}
+
+.login-link {
+  color: white;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif; /* Font Montserrat */
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s; /* Hiệu ứng hover */
+}
+
+.login-link:hover {
+  color: #ccc; /* Màu chữ khi hover */
+}
+
+/* Điều chỉnh responsive cho thiết bị nhỏ hơn */
+@media (max-width: 768px) {
+  .nav-links {
+      display: none; /* Ẩn menu khi kích thước nhỏ */
+  }
+
+  .navbar {
+      flex-direction: column; /* Xếp chồng các phần tử navbar */
+      align-items: center; /* Căn giữa */
+  }
+
+  .user-actions {
+      margin-top: 10px; /* Khoảng cách giữa user-actions và logo */
+  }
+}
+
+.dropdown {
+  position: relative; /* Để định vị dropdown */
+}
+
+.dropdown-menu {
+  position: absolute; /* Đặt dropdown ở vị trí tuyệt đối */
+  background-color: black; /* Màu nền dropdown */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Bóng đổ cho dropdown */
+  list-style: none; /* Bỏ gạch chân */
+  padding: 0; /* Bỏ padding */
+  margin: 0; /* Bỏ margin */
+  z-index: 1000; /* Đảm bảo dropdown nằm trên các phần tử khác */
+}
+
+.dropdown-menu li {
+  padding: 10px 20px; /* Padding cho từng mục trong dropdown */
+}
+
+.dropdown-menu a {
+  color: white; /* Màu chữ trắng */
+  text-decoration: none; /* Bỏ gạch chân */
+  font-family: 'Montserrat', sans-serif; /* Font Montserrat */
+  font-size: 16px;
+  display: flex; /* Để hiển thị icon bên trái chữ */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+}
+
+.dropdown-menu a:hover {
+  background-color: #333; /* Màu nền khi hover */
+}
+/* src/components/navbar.css */
+
+.cart-icon {
+  position: relative; /* Để định vị số lượng giỏ hàng */
+  margin-right: 15px;
+}
+
+.cart-count {
+  position: absolute; /* Định vị số lượng giỏ hàng */
+  top: -5px; /* Khoảng cách từ đỉnh */
+  right: -6px; /* Khoảng cách từ bên phải */
+  background-color: red; /* Màu nền cho số lượng */
+  color: white; /* Màu chữ cho số lượng */
+  border-radius: 50%; /* Đường viền tròn */
+  padding: 2px 5px; /* Khoảng cách bên trong */
+  font-size: 12px; /* Kích thước chữ */
+}

@@ -1,0 +1,93 @@
+/* src/components/CartPopup.css */
+.cart-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Đảm bảo pop-up ở trên cùng */
+  }
+  
+  .cart-popup {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-height: 600px; /* Đặt chiều cao tối đa cho popup */
+    overflow: hidden; /* Ẩn các phần tử ngoài giới hạn */
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between; /* Căn giữa các phần tử */
+    align-items: center;
+  }
+  
+  .close-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .cart-items {
+    margin-top: 20px;
+    max-height: 400px; /* Giới hạn chiều cao cho danh sách sản phẩm */
+    overflow-y: auto; /* Hiển thị thanh cuộn theo chiều dọc */
+    padding: 10px; /* Khoảng cách giữa các sản phẩm */
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .cart-item-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .cart-item-info {
+    flex-grow: 1;
+  }
+  
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantity-controls button {
+    margin: 0 5px;
+  }
+  
+  .remove-button {
+    margin-left: 10px;
+    color: red;
+  }
+  
+  .order-button {
+    margin-top: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .order-button:hover {
+    background-color: #218838;
+  }
+  

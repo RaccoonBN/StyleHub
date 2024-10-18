@@ -1,0 +1,26 @@
+/* FounderCard.css */
+
+.founder-card {
+    background-color: #f9f9f9; /* Màu nền cho card */
+    border: 1px solid #ccc; /* Đường viền cho card */
+    border-radius: 10px; /* Bo góc cho card */
+    padding: 20px; /* Khoảng cách bên trong card */
+    text-align: center; /* Căn giữa nội dung trong card */
+    margin: 10px; /* Khoảng cách giữa các card */
+    width: 200px; /* Chiều rộng card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.founder-image {
+    width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng card */
+    height: auto; /* Giữ tỷ lệ của hình ảnh */
+    border-radius: 10px; /* Bo góc cho hình ảnh */
+}
+
+.about h3 {
+    margin: 10px 0 5px; /* Khoảng cách cho tên */
+}
+
+.about p {
+    color: #777; /* Màu chữ cho chức vụ */
+}

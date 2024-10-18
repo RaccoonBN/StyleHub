@@ -1,0 +1,104 @@
+/* src/components/authPopup.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif; /* Thiết lập font cho toàn bộ body */
+}
+
+.auth-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8); /* Màu nền mờ đen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Để đảm bảo pop-up trên các thành phần khác */
+}
+
+.auth-popup {
+  background: black; /* Nền của pop-up là màu đen */
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px; /* Chiều rộng của pop-up */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  color: white; /* Màu chữ trong pop-up */
+}
+
+h2 {
+  text-align: center; /* Canh giữa tiêu đề */
+  margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Khoảng cách giữa các trường nhập liệu */
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px; /* Đặt vị trí của icon */
+  color: black; /* Màu icon là trắng */
+  margin-top: 1rem;
+}
+
+input {
+  margin-top: 1rem;
+  font-size: 16px;
+  width: calc(100% - 40px); /* Đặt chiều rộng của input với khoảng cách cho icon */
+  padding: 10px 10px 10px 30px; /* Padding cho input để có khoảng cách với icon */
+  border: 1px solid #ccc; /* Đường viền cho input */
+  border-radius: 4px; /* Bo tròn góc cho input */
+  background-color: white; /* Nền của input là màu trắng */
+  color: black; /* Màu chữ trong input */
+}
+
+input::placeholder {
+  color: #888; /* Màu placeholder */
+}
+
+.toggle-password-visibility {
+  cursor: pointer;
+  position: absolute;
+  right: 10px; /* Đặt vị trí cho icon mắt */
+  color: black; /* Màu icon mắt là trắng */
+  margin-top: 1rem;
+
+}
+
+button {
+  width: 100%; /* Chiều rộng của nút */
+  padding: 10px;
+  font-size: 16px;
+  background-color: white; /* Màu nền nút */
+  color: black; /* Màu chữ */
+  border: none; /* Không có viền */
+  border-radius: 20px; /* Bo tròn góc cho nút */
+  cursor: pointer; /* Đổi con trỏ khi hover */
+  margin-top: 10px; /* Khoảng cách trên nút */
+}
+
+
+
+.toggle-link {
+  color: #5ab9ec; /* Màu chữ cho liên kết */
+  cursor: pointer; /* Đổi con trỏ khi hover */
+}
+
+.close-popup {
+  background-color: #ec5a5a; /* Nền trong suốt */
+  color: white; /* Màu chữ cho nút đóng */
+  border: none; /* Không có viền */
+  cursor: pointer; /* Đổi con trỏ khi hover */
+}
+
+.close-popup:hover {
+  text-decoration: underline; /* Gạch chân khi hover */
+}

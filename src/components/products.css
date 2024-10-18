@@ -1,0 +1,151 @@
+/* Đảm bảo sản phẩm được hiển thị theo dạng lưới, mỗi dòng chứa 3 sản phẩm */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Mỗi dòng chứa 3 sản phẩm */
+    gap: 20px; /* Khoảng cách giữa các sản phẩm */
+    padding: 20px;
+    justify-items: center; /* Căn giữa nội dung */
+}
+
+/* Thiết kế thẻ sản phẩm */
+.product-card {
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    max-width: 300px; /* Giới hạn chiều rộng tối đa của thẻ sản phẩm */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng cho thẻ sản phẩm */
+    transition: transform 0.2s; /* Hiệu ứng khi hover */
+}
+
+/* Hiệu ứng hover cho thẻ sản phẩm */
+.product-card:hover {
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+/* Hình ảnh sản phẩm với kích thước vuông 300px */
+.product-card img {
+    width: 300px; /* Kích thước hình ảnh */
+    height: 300px; /* Kích thước hình ảnh */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 10px; /* Đường viền cho hình ảnh */
+    margin-bottom: 10px; /* Khoảng cách dưới hình ảnh */
+}
+
+/* Phần tên sản phẩm */
+.product-card h3 {
+    margin: 10px 0;
+    font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
+    font-size: 18px;
+    color: #333;
+}
+
+/* Phần giá tiền */
+.product-card p {
+    color: #FF5733; /* Thay đổi màu sắc cho giá tiền */
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
+    font-size: 16px;
+}
+/* CSS cho phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* Khoảng cách trên và dưới */
+}
+
+.pagination button {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 5px; /* Kích thước nhỏ cho nút */
+    margin: 0 2px; /* Khoảng cách giữa các nút */
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 12px; /* Kích thước font nhỏ hơn */
+    width: 30px; /* Chiều rộng cố định cho nút */
+    height: 30px; /* Chiều cao cố định cho nút */
+}
+
+
+.pagination button:hover {
+    background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+.pagination button.active {
+    background-color: black; /* Màu nền cho nút đang hoạt động */
+    color: white; /* Màu chữ cho nút đang hoạt động */
+    border: none; /* Không viền cho nút đang hoạt động */
+}
+/* CSS cho popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền tối */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Đảm bảo popup nằm trên các thành phần khác */
+}
+
+.popup-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%; /* Chiều rộng tối đa */
+}
+
+.popup-content img {
+    width: 100%; /* Hình ảnh chiếm toàn bộ chiều rộng */
+    height: auto; /* Giữ tỷ lệ hình ảnh */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+
+.close:hover {
+    color: black; /* Thay đổi màu khi hover */
+}
+
+.popup-buttons {
+    margin-top: 15px;
+}
+
+.popup-buttons button {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popup-buttons button:hover {
+    background-color: #0056b3; /* Thay đổi màu khi hover */
+}
+
+/* Chọn kích thước */
+label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+}
