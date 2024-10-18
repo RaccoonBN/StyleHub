@@ -1,0 +1,68 @@
+/* src/components/Footer.css */
+.footer {
+    background-color: #000; /* Màu nền là đen */
+    color: #fff; /* Màu chữ là trắng */
+    padding: 15px; /* Khoảng cách bên trong */
+    text-align: center; /* Canh giữa nội dung */
+    font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
+}
+
+.footer-brand {
+    margin-bottom: 10px; /* Khoảng cách dưới tên thương hiệu */
+}
+
+.footer-logo {
+    max-width: 350px; /* Chiều rộng tối đa của logo */
+    height: auto; /* Giữ tỷ lệ của logo */
+    margin-bottom: 10px; /* Khoảng cách dưới logo */
+}
+
+.footer-content {
+    display: flex; /* Sử dụng Flexbox để bố trí menu và thông tin liên hệ */
+    justify-content: space-between; /* Căn đều khoảng cách giữa menu và thông tin */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    max-width: 1200px; /* Chiều rộng tối đa */
+    margin: 0 auto; /* Giữa footer */
+}
+
+.footer-links {
+    list-style: none; /* Không hiển thị dấu chấm */
+    padding: 0; /* Xóa padding */
+    margin: 0; /* Xóa margin */
+}
+.footer-slogan {
+    text-align: center; /* Căn giữa câu slogan */
+    font-size: 18px; /* Kích thước chữ cho slogan */
+    margin: 10px 0; /* Khoảng cách trên và dưới cho slogan */
+    color: white; /* Màu chữ của slogan */
+}
+.footer-slogan {
+    text-align: center; /* Căn giữa câu slogan */
+    font-size: 18px; /* Kích thước chữ cho slogan */
+    margin: 10px 0; /* Khoảng cách trên và dưới cho slogan */
+    color: white; /* Màu chữ của slogan */
+}
+
+.footer-links li {
+    display: inline; /* Hiển thị liên kết ngang */
+    margin: 0 10px; /* Khoảng cách giữa các liên kết */
+}
+
+.footer-links a {
+    color: white; /* Màu chữ liên kết */
+    text-decoration: none; /* Bỏ dấu gạch chân */
+}
+
+.footer-links a:hover {
+    text-decoration: underline; /* Hiệu ứng khi hover */
+}
+
+.footer-contact {
+    text-align: right; /* Căn phải cho thông tin liên hệ */
+    margin-left: 10px;
+    font-size: 14px; /* Kích thước font cho thông tin liên hệ */
+}
+
+.footer-rights {
+    margin-top: 20px; /* Khoảng cách trên cho quyền bảo lưu */
+}

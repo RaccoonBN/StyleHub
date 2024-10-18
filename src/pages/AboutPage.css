@@ -1,0 +1,31 @@
+/* AboutPage.css */
+
+.about-page {
+    padding: 20px; /* Khoảng cách bên trong trang */
+    text-align: center; /* Căn giữa nội dung */
+}
+
+.founder-cards {
+    margin-top: 40px;
+    display: flex; /* Sử dụng Flexbox để sắp xếp card nằm ngang */
+    justify-content: center; /* Căn giữa card trong hàng */
+    flex-wrap: wrap; /* Cho phép card xuống dòng nếu không đủ chỗ */
+    gap: 20px; /* Khoảng cách giữa các card */
+}
+.about-title {
+    margin-top: 70px; /* Thêm khoảng cách trên cho tiêu đề */
+}
+.founder-card {
+    border: 1px solid #ddd; /* Viền cho card */
+    border-radius: 8px; /* Bo tròn góc cho card */
+    padding: 16px; /* Khoảng cách bên trong card */
+    width: 200px; /* Chiều rộng của từng card */
+    text-align: center; /* Căn giữa văn bản trong card */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng cho card */
+}
+
+.founder-image {
+    width: 100%; /* Hình ảnh chiếm toàn bộ chiều rộng của card */
+    height: auto; /* Giữ tỷ lệ của hình ảnh */
+    border-radius: 8px; /* Bo tròn góc hình ảnh */
+}
