@@ -2,18 +2,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Sử dụng useNavigate thay cho useHistory
 import './CartPopup.css'; // Nhập CSS cho pop-up
-import spdemo2 from '../assets/spdemo2.jpg';
-import spdemo3 from '../assets/spdemo3.jpg';
+
 import { FaTimes } from 'react-icons/fa'; // Import icon đóng
 
 const CartPopup = ({ isOpen, onClose }) => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Sản phẩm 1', price: 100000, quantity: 1, image: spdemo2 },
-    { id: 2, name: 'Sản phẩm 2', price: 200000, quantity: 1, image: spdemo3 },
-    { id: 3, name: 'Sản phẩm 3', price: 100000, quantity: 1, image: spdemo2 },
-    { id: 4, name: 'Sản phẩm 4', price: 200000, quantity: 1, image: spdemo3 },
-    // Thêm sản phẩm vào giỏ hàng ở đây
-  ]);
+
 
   const navigate = useNavigate(); // Khởi tạo navigate
 

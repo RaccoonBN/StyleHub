@@ -6,8 +6,8 @@ const FounderCard = ({ name, position, image }) => {
     return (
         <div className="founder-card">
             <img src={image} alt={name} className="founder-image" />
-            <h3>{name}</h3>
-            <p>{position}</p>
+            <h3 className="about">{name}</h3>
+            <p className="about">{position}</p>
         </div>
     );
 };

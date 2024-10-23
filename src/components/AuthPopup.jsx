@@ -1,7 +1,9 @@
-// src/components/AuthPopup.js
 import React, { useState } from 'react';
 import './authPopup.css'; // Nhập CSS cho pop-up
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash,FaUser } from 'react-icons/fa'; // Nhập icon
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa'; // Nhập icon
+import axios from 'axios'; // Nhập Axios để gửi yêu cầu HTTP
+import { ToastContainer, toast } from 'react-toastify'; // Nhập ToastContainer và toast
+import 'react-toastify/dist/ReactToastify.css'; // Nhập CSS cho Toast
 
 const AuthPopup = ({ isOpen, onClose }) => {
   const [isLoginMode, setIsLoginMode] = useState(true); // Xác định chế độ hiện tại
@@ -12,20 +14,12 @@ const AuthPopup = ({ isOpen, onClose }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Để hiển thị mật khẩu
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isLoginMode) {
-      // Xử lý đăng nhập
-      console.log('Đăng nhập với:', { email, password });
-    } else {
-      // Xử lý đăng ký
-      console.log('Đăng ký với:', { fullname, email, password, confirmPassword });
-    }
-    onClose(); // Đóng pop-up sau khi thực hiện
-  };
-
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode); // Chuyển đổi giữa đăng nhập và đăng ký
+    setFullname(''); // Đặt lại trường họ tên khi chuyển sang chế độ đăng nhập
+    setEmail(''); // Đặt lại trường email
+    setPassword(''); // Đặt lại trường mật khẩu
+    setConfirmPassword(''); // Đặt lại trường xác nhận mật khẩu
   };
 
   if (!isOpen) return null; // Nếu pop-up không mở thì không hiển thị gì
@@ -39,7 +33,7 @@ const AuthPopup = ({ isOpen, onClose }) => {
             <div className="form-group">
               <label htmlFor="fullname">Họ tên</label>
               <div className="input-with-icon">
-              <FaUser className="input-icon" />
+                <FaUser className="input-icon" />
                 <input
                   type="text"
                   id="fullname"
@@ -107,6 +101,17 @@ const AuthPopup = ({ isOpen, onClose }) => {
         </p>
         <button className="close-popup" onClick={onClose}>Đóng</button>
       </div>
+      <ToastContainer 
+          style={{ zIndex: 2000, marginTop: '40px' }} 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false} 
+          closeOnClick={true} 
+          pauseOnHover={true} 
+          draggable={true} 
+          progress={undefined} 
+/>
+
     </div>
   );
 };

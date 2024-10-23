@@ -11,7 +11,7 @@ body, html {
   align-items: center; /* Căn giữa */
   padding: 15px 20px;
   background-color: black; /* Thanh navbar màu đen */
-  z-index: 2000; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
+  z-index: 1500; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
 
 }
 
