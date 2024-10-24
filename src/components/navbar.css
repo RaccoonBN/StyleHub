@@ -12,6 +12,9 @@ body, html {
   padding: 15px 20px;
   background-color: black; /* Thanh navbar màu đen */
   z-index: 2000; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
+  padding: 10px 20px;
+  background-color: black; /* Thanh navbar màu đen */
+  z-index: 1500; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
 
 }
 
@@ -136,4 +139,31 @@ body, html {
   border-radius: 50%; /* Đường viền tròn */
   padding: 2px 5px; /* Khoảng cách bên trong */
   font-size: 12px; /* Kích thước chữ */
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  margin-top: -10px; 
+}
+
+.search-bar input {
+  width: 85%;
+  padding: 8px;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  outline: none;
+}
+
+.search-icon {
+  margin-left: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+}
+
+.search-icon:hover {
+  color: #555;
 }
