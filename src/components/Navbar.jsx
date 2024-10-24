@@ -28,8 +28,12 @@ const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCar
   const openCartPopup = () => setIsCartPopupOpen(true);
   const closeCartPopup = () => setIsCartPopupOpen(false);
   const handleSearch = () => {
-    // Xử lý logic tìm kiếm sản phẩm
-    console.log(`Tìm kiếm: ${searchQuery}`);
+    /* Xử lý logic tìm kiếm sản phẩm
+    const filteredProducts = allProducts.filter(product =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProducts(filteredProducts);
+    console.log(`Tìm kiếm: ${searchQuery}`); */
   };
 
   return (
@@ -45,6 +49,7 @@ const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCar
             placeholder="Tìm kiếm sản phẩm..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Cập nhật giá trị tìm kiếm
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }} // Kích hoạt tìm kiếm khi nhấn Enter
           />
           <FaSearch className="search-icon" onClick={handleSearch} /> {/* Thêm sự kiện onClick vào icon */}
         </div>

@@ -21,6 +21,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "eslint": "eslint . --ext .js,.jsx",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node backend/server.js",
     "client": "react-scripts start",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "concurrently": "^9.0.1"
   }
 }

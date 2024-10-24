@@ -1,39 +1,22 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState } from 'react'; 
 import './products.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ addToCart }) => { 
-  const [products, setProducts] = useState([]);
+const Products = ({ allProducts = [], addToCart }) => { 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/products');
-        if (!response.ok) throw new Error('Failed to fetch products');
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  console.log('allProducts:', allProducts); // Kiểm tra giá trị của allProducts
 
-    fetchProducts();
-  }, []);
-
+  // Tính toán phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const currentItems = allProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(allProducts.length / itemsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -59,16 +42,18 @@ const Products = ({ addToCart }) => {
 
   return (
     <div>
-      {loading && <p>Loading products...</p>}
-      {error && <p>Error: {error}</p>}
       <div className="products-grid">
-        {currentItems.map(product => (
-          <div key={product.product_id} className="product-card" onClick={() => openPopup(product)}>
-            <img src={require(`../assets/${product.images}`)} alt={product.product_name} />
-            <h3>{product.product_name}</h3>
-            <p>{product.cost} VND</p>
-          </div>
-        ))}
+        {currentItems.length > 0 ? (
+          currentItems.map(product => (
+            <div key={product.product_id} className="product-card" onClick={() => openPopup(product)}>
+              <img src={require(`../assets/${product.images}`)} alt={product.product_name} />
+              <h3>{product.product_name}</h3>
+              <p>{product.cost} VND</p>
+            </div>
+          ))
+        ) : (
+          <p>Không có sản phẩm nào.</p>
+        )}
       </div>
 
       <div className="pagination">
@@ -107,8 +92,8 @@ const Products = ({ addToCart }) => {
                 <option value="XL">XL</option>
               </select>
               <div className="popup-buttons">
-                <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize },closePopup())}>Thêm vào giỏ hàng</button>
-                <button onClick={handleBuyNow}>Mua ngay</button>
+              <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize },closePopup())}>Thêm vào giỏ hàng</button>
+              <button onClick={handleBuyNow}>Mua ngay</button>
               </div>
             </div>
           </div>

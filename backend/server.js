@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // API lấy dữ liệu products
 app.get('/products', (req, res) => {
-    const query = 'SELECT * FROM products'; // Thay bằng tên bảng sách của bạn
+    const query = 'SELECT * FROM products'; 
     db.query(query, (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
