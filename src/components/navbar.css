@@ -137,3 +137,31 @@ body, html {
   padding: 2px 5px; /* Khoảng cách bên trong */
   font-size: 12px; /* Kích thước chữ */
 }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  outline: none;
+}
+
+.search-icon {
+  margin-left: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+}
+
+.search-icon:hover {
+  color: #555;
+}
+
