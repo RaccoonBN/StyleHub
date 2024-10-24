@@ -3,7 +3,7 @@ import React from 'react';
 import Products from '../components/Products'; // Import Products
 
 
-const Home = () => {
+const Home = ({ addToCart }) => {
   return (
     <div>
       {/* Nội dung trang chủ */}
@@ -13,7 +13,7 @@ const Home = () => {
       </div>
     {/* Hiển thị sản phẩm */}
     <h2>TẤT CẢ SẢN PHẨM</h2>
-    <Products />
+    <Products addToCart={addToCart} />
     </div>
   );
 };

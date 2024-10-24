@@ -1,76 +1,83 @@
-// src/components/CartPopup.js
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Sử dụng useNavigate thay cho useHistory
-import './CartPopup.css'; // Nhập CSS cho pop-up
-import spdemo2 from '../assets/spdemo2.jpg';
-import spdemo3 from '../assets/spdemo3.jpg';
-import { FaTimes } from 'react-icons/fa'; // Import icon đóng
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import './CartPopup.css';
 
-const CartPopup = ({ isOpen, onClose }) => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Sản phẩm 1', price: 100000, quantity: 1, image: spdemo2 },
-    { id: 2, name: 'Sản phẩm 2', price: 200000, quantity: 1, image: spdemo3 },
-    { id: 3, name: 'Sản phẩm 3', price: 100000, quantity: 1, image: spdemo2 },
-    { id: 4, name: 'Sản phẩm 4', price: 200000, quantity: 1, image: spdemo3 },
-    // Thêm sản phẩm vào giỏ hàng ở đây
-  ]);
+const CartPopup = ({ isOpen, onClose, cartItems, setCartItems }) => {
+    const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Khởi tạo navigate
+    // Nếu pop-up không mở thì không render
+    if (!isOpen) return null;
 
-  if (!isOpen) return null;
+    // Hàm thay đổi số lượng sản phẩm trong giỏ hàng
+    const handleQuantityChange = (id, change) => {
+        setCartItems((prevItems) => 
+            prevItems.map((item) => 
+                item.product_id === id 
+                ? { ...item, quantity: Math.max(1, item.quantity + change) } 
+                : item
+            )
+        );
+    };
 
-  const handleQuantityChange = (id, change) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
-      )
+    // Hàm xóa sản phẩm khỏi giỏ hàng
+    const handleRemoveItem = (id) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.product_id !== id));
+    };
+
+    // Hàm xử lý đặt hàng, điều hướng đến trang checkout
+    const handleOrder = () => {
+        if (cartItems.length > 0) {
+            navigate('/checkout');
+            onClose();
+        } else {
+            alert('Giỏ hàng của bạn đang trống.');
+        }
+    };
+
+    return (
+        <div className="cart-popup-overlay">
+            <div className="cart-popup">
+                <div className="popup-header">
+                    <h2>Giỏ hàng</h2>
+                    <FaTimes className="close-icon" onClick={onClose} />
+                </div>
+                <div className="cart-items">
+                    {cartItems.length === 0 ? (
+                        <p>Giỏ hàng của bạn đang trống.</p>
+                    ) : (
+                        cartItems.map((item) => (
+                            <div key={item.product_id} className="cart-item">
+                              <img src={require(`../assets/${item.images}`)} alt={item.product_name} className="cart-item-image" />
+                              <div className="cart-item-info">
+                                <h4>{item.product_name}</h4>
+                                <p>
+                                  Giá: {item.cost !== undefined ? item.cost.toLocaleString('vi-VN') : 'Chưa có giá'} VND
+                                </p>
+                              </div>
+                              <div className="quantity-controls">
+                                <button 
+                                  onClick={() => handleQuantityChange(item.product_id, -1)} 
+                                  disabled={item.quantity <= 1} // Vô hiệu hóa nếu số lượng <= 1
+                                >
+                                  -
+                                </button>
+                                <span>{item.quantity}</span>
+                                <button onClick={() => handleQuantityChange(item.product_id, 1)}>+</button>
+                                <button onClick={() => handleRemoveItem(item.product_id)} className="remove-button">
+                                  Xóa
+                                </button>
+                              </div>
+                            </div>
+                          ))                          
+                    )}
+                </div>
+                {cartItems.length > 0 && (
+                    <button className="order-button" onClick={handleOrder}>Đặt hàng</button>
+                )}
+            </div>
+        </div>
     );
-  };
-
-  const handleRemoveItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
-
-  const handleOrder = () => {
-    // Chuyển hướng đến trang đặt hàng
-    navigate('/checkout'); // Đường dẫn đến trang đặt hàng
-    onClose(); 
-  };
-
-  return (
-    <div className="cart-popup-overlay">
-      <div className="cart-popup">
-        <div className="popup-header">
-          <h2>Giỏ hàng</h2>
-          <FaTimes className="close-icon" onClick={onClose} />
-        </div>
-        <div className="cart-items">
-          {cartItems.length === 0 ? (
-            <p>Giỏ hàng của bạn đang trống.</p>
-          ) : (
-            cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.name} className="cart-item-image" />
-                <div className="cart-item-info">
-                  <h4>{item.name}</h4>
-                  <p>Giá: {item.price.toLocaleString('vi-VN')} VND</p>
-                </div>
-                <div className="quantity-controls">
-                  <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
-                  <button onClick={() => handleRemoveItem(item.id)} className="remove-button">Xóa</button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-        {cartItems.length > 0 && (
-          <button className="order-button" onClick={handleOrder}>Đặt hàng</button>
-        )}
-      </div>
-    </div>
-  );
 };
 
 export default CartPopup;
