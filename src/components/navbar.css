@@ -9,7 +9,7 @@ body, html {
   display: flex;
   justify-content: space-between; /* Căn đều không gian giữa logo và menu */
   align-items: center; /* Căn giữa */
-  padding: 15px 20px;
+  padding: 10px 20px;
   background-color: black; /* Thanh navbar màu đen */
   z-index: 1500; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
 
@@ -36,7 +36,7 @@ body, html {
 }
 
 .nav-links a {
-  margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+  margin-right: 5px; /* Khoảng cách giữa icon và chữ */
   color: white; /* Màu chữ trắng */
   text-decoration: none; /* Bỏ gạch chân */
   font-family: 'Montserrat', sans-serif; /* Font Montserrat */
@@ -141,13 +141,14 @@ body, html {
 .search-bar {
   display: flex;
   align-items: center;
-  margin: 0 auto;
-  max-width: 400px;
+  max-width: 300px;
+  margin-top: -10px; 
 }
 
 .search-bar input {
-  width: 100%;
+  width: 85%;
   padding: 8px;
+  align-items: center;
   border: 1px solid #ccc;
   border-radius: 15px;
   outline: none;
