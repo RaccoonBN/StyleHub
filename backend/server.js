@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const authRoutes = require('./routes/authRoutes'); // Đảm bảo đường dẫn đúng
-const cors = require('cors'); // Import cors
+const cors = require('cors');
 
 const app = express();
 const PORT = 5000;
@@ -15,8 +14,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Sử dụng router auth
-app.use('/api/auth', authRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`);

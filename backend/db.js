@@ -17,4 +17,4 @@ db.connect((err) => {
   console.log('Kết nối thành công tới MySQL!');
 });
 
-module.exports = db; // Xuất khẩu db để sử dụng ở nơi khác
+module.exports = db; 

@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css'; // Nhập CSS cho Toast
 
 const AuthPopup = ({ isOpen, onClose }) => {
   const [isLoginMode, setIsLoginMode] = useState(true); // Xác định chế độ hiện tại
-
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +19,40 @@ const AuthPopup = ({ isOpen, onClose }) => {
     setEmail(''); // Đặt lại trường email
     setPassword(''); // Đặt lại trường mật khẩu
     setConfirmPassword(''); // Đặt lại trường xác nhận mật khẩu
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Ngăn form tự động reload
+    try {
+      if (isLoginMode) {
+        // Xử lý đăng nhập
+        const response = await axios.post('/api/login', {
+          email,
+          password,
+        });
+        // Hiển thị thông báo thành công và đóng pop-up nếu đăng nhập thành công
+        toast.success('Đăng nhập thành công!');
+        onClose();
+      } else {
+        // Kiểm tra mật khẩu và mật khẩu xác nhận có khớp không
+        if (password !== confirmPassword) {
+          toast.error('Mật khẩu không khớp. Vui lòng thử lại!');
+          return;
+        }
+        // Xử lý đăng ký
+        const response = await axios.post('/api/register', {
+          fullname,
+          email,
+          password,
+        });
+        // Hiển thị thông báo thành công và chuyển sang chế độ đăng nhập
+        toast.success('Đăng ký thành công! Vui lòng đăng nhập.');
+        toggleMode();
+      }
+    } catch (error) {
+      // Xử lý lỗi từ server hoặc lỗi kết nối
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại!');
+    }
   };
 
   if (!isOpen) return null; // Nếu pop-up không mở thì không hiển thị gì
@@ -110,8 +143,7 @@ const AuthPopup = ({ isOpen, onClose }) => {
           pauseOnHover={true} 
           draggable={true} 
           progress={undefined} 
-/>
-
+      />
     </div>
   );
 };
