@@ -2,7 +2,9 @@
 import React from 'react';
 import Products from '../components/Products'; // Import Products
 
-const Home = ({ allProducts, addToCart }) => {
+const Home = ({ allProducts, filteredProducts, addToCart }) => {
+  // Nếu có sản phẩm được lọc, sử dụng chúng, nếu không sử dụng allProducts
+  const displayProducts = filteredProducts.length > 0 ? filteredProducts : allProducts;
   return (
     <div>
       {/* Nội dung trang chủ */}
@@ -12,7 +14,7 @@ const Home = ({ allProducts, addToCart }) => {
       </div>
       {/* Hiển thị sản phẩm */}
       <h2>TẤT CẢ SẢN PHẨM</h2>
-      <Products allProducts={allProducts} addToCart={addToCart} /> 
+      <Products allProducts={displayProducts} addToCart={addToCart} /> 
     </div>
   );
 };

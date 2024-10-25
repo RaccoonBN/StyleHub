@@ -9,6 +9,7 @@ import Products from './components/Products';
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]); 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -36,17 +37,16 @@ function App() {
     } else {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
     }
-    
   };
 
   return (
     <Router>
       <div>
-        <Navbar cartItems={cartItems} setCartItems={setCartItems} />
+        <Navbar cartItems={cartItems} setCartItems={setCartItems} allProducts={allProducts} setFilteredProducts={setFilteredProducts} />
         <Routes>
-          <Route path="/" element={<Home allProducts={allProducts} addToCart={addToCart} />} /> 
+          <Route path="/" element={<Home allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} /> 
           <Route path="/about" element={<About />} />
-          <Route path="/products" element={<Products allProducts={allProducts} addToCart={addToCart} />} />
+          <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
         </Routes>
         <Footer />
       </div>

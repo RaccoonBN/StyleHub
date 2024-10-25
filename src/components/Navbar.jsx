@@ -6,7 +6,7 @@ import CartPopup from './CartPopup';
 import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'; // Thêm FaSearch
 import logo from '../assets/logo.png';
 
-const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCartItems từ props
+const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) => {
   const [productDropdownOpen, setProductDropdownOpen] = useState(false);
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
@@ -27,14 +27,18 @@ const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCar
   const closeLoginPopup = () => setIsLoginPopupOpen(false);
   const openCartPopup = () => setIsCartPopupOpen(true);
   const closeCartPopup = () => setIsCartPopupOpen(false);
-  const handleSearch = () => {
-    /* Xử lý logic tìm kiếm sản phẩm
-    const filteredProducts = allProducts.filter(product =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProducts(filteredProducts);
-    console.log(`Tìm kiếm: ${searchQuery}`); */
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/search?query=' + searchQuery);
+      const data = await response.json();
+      setFilteredProducts(data);
+      console.log(`Tìm kiếm: ${searchQuery}`);
+    } catch (error) {
+      console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+    }
   };
+  
 
   return (
     <header className="header">
@@ -42,8 +46,8 @@ const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCar
         <div className="logo">
           <img src={logo} alt="Logo StyleHub" />
         </div>
-         {/* Thanh tìm kiếm */}
-         <div className="search-bar">
+        {/* Thanh tìm kiếm */}
+        <div className="search-bar">
           <input
             type="text"
             placeholder="Tìm kiếm sản phẩm..."
@@ -51,7 +55,7 @@ const Navbar = ({ cartItems, setCartItems }) => { // Nhận cartItems và setCar
             onChange={(e) => setSearchQuery(e.target.value)} // Cập nhật giá trị tìm kiếm
             onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }} // Kích hoạt tìm kiếm khi nhấn Enter
           />
-          <FaSearch className="search-icon" onClick={handleSearch} /> {/* Thêm sự kiện onClick vào icon */}
+          <FaSearch className="search-icon" onClick={handleSearch} /> 
         </div>
         <ul className="nav-links">
           <li><Link to="/">TRANG CHỦ</Link></li>

@@ -4,19 +4,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ allProducts = [], addToCart }) => { 
+const Products = ({ allProducts = [], filteredProducts = [],addToCart }) => { 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('');
 
-  console.log('allProducts:', allProducts); // Kiểm tra giá trị của allProducts
+  const displayProducts = filteredProducts.length > 0 ? filteredProducts : allProducts;
 
   // Tính toán phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = allProducts.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(allProducts.length / itemsPerPage);
+  const currentItems = displayProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(displayProducts.length / itemsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -92,8 +92,8 @@ const Products = ({ allProducts = [], addToCart }) => {
                 <option value="XL">XL</option>
               </select>
               <div className="popup-buttons">
-              <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize },closePopup())}>Thêm vào giỏ hàng</button>
-              <button onClick={handleBuyNow}>Mua ngay</button>
+                <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize },closePopup())}>Thêm vào giỏ hàng</button>
+                <button onClick={handleBuyNow}>Mua ngay</button>
               </div>
             </div>
           </div>
