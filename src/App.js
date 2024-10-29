@@ -5,11 +5,13 @@ import About from './pages/AboutPage';
 import Footer from './components/Footer'; 
 import Navbar from './components/Navbar'; 
 import Products from './components/Products';
+import AuthPopup from './components/AuthPopup'; // Thêm AuthPopup vào import
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // Quản lý trạng thái Popup
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,16 +41,31 @@ function App() {
     }
   };
 
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <Router>
       <div>
-        <Navbar cartItems={cartItems} setCartItems={setCartItems} allProducts={allProducts} setFilteredProducts={setFilteredProducts} />
+        <Navbar 
+          cartItems={cartItems} 
+          setCartItems={setCartItems} 
+          allProducts={allProducts} 
+          setFilteredProducts={setFilteredProducts} 
+          onOpenPopup={handleOpenPopup} // Thêm props để mở Popup
+        />
         <Routes>
           <Route path="/" element={<Home allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} /> 
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
         </Routes>
         <Footer />
+        <AuthPopup isOpen={isPopupOpen} onClose={handleClosePopup} /> {/* Thêm AuthPopup */}
       </div>
     </Router>
   );

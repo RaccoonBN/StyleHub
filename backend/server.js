@@ -4,11 +4,21 @@ const db = require('./db'); // Import db.js
 const path = require('path');
 const bodyParser = require('body-parser');
 const util = require('util'); // Thêm thư viện util để promisify
+const mongoose = require('mongoose'); // Thêm mongoose để kết nối MongoDB
+const authRoutes = require('./routes/auth'); // Import routes cho auth
 
 const app = express();
 const port = 5000;
 
-app.use(express.static(path.join(__dirname, 'assets')));   
+// Kết nối MongoDB
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/stylehubDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('Kết nối MongoDB thành công!'))
+.catch(err => console.error('Kết nối MongoDB thất bại:', err));
+
+app.use(express.static(path.join(__dirname, 'assets')));
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
@@ -54,6 +64,9 @@ app.get('/search', async (req, res) => {
         res.status(500).json({ error: 'Failed to search products', details: error.message });
     }
 });
+
+// Sử dụng route cho auth
+app.use('/api', authRoutes);
 
 app.listen(port, () => {
     console.log(`Server đang chạy trên http://localhost:${port}`);

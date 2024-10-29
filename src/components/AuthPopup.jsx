@@ -1,61 +1,70 @@
+// frontend/src/components/AuthPopup.jsx
 import React, { useState } from 'react';
-import './authPopup.css'; // Nhập CSS cho pop-up
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa'; // Nhập icon
-import axios from 'axios'; // Nhập Axios để gửi yêu cầu HTTP
-import { ToastContainer, toast } from 'react-toastify'; // Nhập ToastContainer và toast
-import 'react-toastify/dist/ReactToastify.css'; // Nhập CSS cho Toast
+import './authPopup.css';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthPopup = ({ isOpen, onClose }) => {
-  const [isLoginMode, setIsLoginMode] = useState(true); // Xác định chế độ hiện tại
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Để hiển thị mật khẩu
+  const [showPassword, setShowPassword] = useState(false);
 
   const toggleMode = () => {
-    setIsLoginMode(!isLoginMode); // Chuyển đổi giữa đăng nhập và đăng ký
-    setFullname(''); // Đặt lại trường họ tên khi chuyển sang chế độ đăng nhập
-    setEmail(''); // Đặt lại trường email
-    setPassword(''); // Đặt lại trường mật khẩu
-    setConfirmPassword(''); // Đặt lại trường xác nhận mật khẩu
+    setIsLoginMode(!isLoginMode);
+    setFullname('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Ngăn form tự động reload
+    e.preventDefault();
     try {
       if (isLoginMode) {
-        // Xử lý đăng nhập
-        const response = await axios.post('/api/login', {
+        const response = await axios.post('http://localhost:5000/api/login', {
           email,
           password,
         });
-        // Hiển thị thông báo thành công và đóng pop-up nếu đăng nhập thành công
-        toast.success('Đăng nhập thành công!');
-        onClose();
+        console.log(response); // Ghi lại phản hồi
+  
+        if (response.status === 200) {
+          toast.success('Đăng nhập thành công!');
+          onClose();
+        } else {
+          toast.error(response.data.message || 'Đăng nhập không thành công.');
+        }
       } else {
-        // Kiểm tra mật khẩu và mật khẩu xác nhận có khớp không
         if (password !== confirmPassword) {
           toast.error('Mật khẩu không khớp. Vui lòng thử lại!');
           return;
         }
-        // Xử lý đăng ký
-        const response = await axios.post('/api/register', {
+  
+        const response = await axios.post('http://localhost:5000/api/register', {
           fullname,
           email,
           password,
         });
-        // Hiển thị thông báo thành công và chuyển sang chế độ đăng nhập
-        toast.success('Đăng ký thành công! Vui lòng đăng nhập.');
-        toggleMode();
+  
+        if (response.status === 201) {
+          toast.success('Đăng ký thành công! Vui lòng đăng nhập.');
+          toggleMode();
+        } else {
+          toast.error(response.data.message || 'Đăng ký không thành công.');
+        }
       }
     } catch (error) {
-      // Xử lý lỗi từ server hoặc lỗi kết nối
-      toast.error('Có lỗi xảy ra. Vui lòng thử lại!');
+      console.log(error); // Ghi lại lỗi
+      toast.error(error.response?.data?.message || error.message || 'Có lỗi xảy ra. Vui lòng thử lại!');
     }
   };
+  
 
-  if (!isOpen) return null; // Nếu pop-up không mở thì không hiển thị gì
+  if (!isOpen) return null;
 
   return (
     <div className="auth-popup-overlay">
@@ -118,32 +127,17 @@ const AuthPopup = ({ isOpen, onClose }) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-                <span className="toggle-password-visibility" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
               </div>
             </div>
           )}
           <button type="submit">{isLoginMode ? 'Đăng Nhập' : 'Đăng Ký'}</button>
+          <p onClick={toggleMode}>
+            {isLoginMode ? 'Bạn chưa có tài khoản? Đăng ký ngay' : 'Bạn đã có tài khoản? Đăng nhập'}
+          </p>
         </form>
-        <p>
-          {isLoginMode ? 'Chưa có tài khoản? ' : 'Đã có tài khoản? '}
-          <span onClick={toggleMode} className="toggle-link">
-            {isLoginMode ? 'Đăng Ký' : 'Đăng Nhập'}
-          </span>
-        </p>
+        <ToastContainer />
         <button className="close-popup" onClick={onClose}>Đóng</button>
       </div>
-      <ToastContainer 
-          style={{ zIndex: 2000, marginTop: '40px' }} 
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false} 
-          closeOnClick={true} 
-          pauseOnHover={true} 
-          draggable={true} 
-          progress={undefined} 
-      />
     </div>
   );
 };
