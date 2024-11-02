@@ -16,23 +16,28 @@ const AuthPopup = ({ isOpen, onClose }) => {
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
-    setFullname('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setFullname(''); // Reset fullname
+    setEmail(''); // Reset email
+    setPassword(''); // Reset password
+    setConfirmPassword(''); // Reset confirm password
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data:', { fullname, email, password, confirmPassword, isLoginMode }); // Log dữ liệu gửi đi
+
     try {
       if (isLoginMode) {
         const response = await axios.post('http://localhost:5000/api/login', {
           email,
           password,
         });
-        console.log(response); // Ghi lại phản hồi
-  
+
+        console.log('Login Response:', response); // Log phản hồi từ server
+
         if (response.status === 200) {
+          // Lưu token vào localStorage (nếu có) và thông báo thành công
+          localStorage.setItem('token', response.data.token); // Lưu token nếu server trả về
           toast.success('Đăng nhập thành công!');
           onClose();
         } else {
@@ -43,26 +48,28 @@ const AuthPopup = ({ isOpen, onClose }) => {
           toast.error('Mật khẩu không khớp. Vui lòng thử lại!');
           return;
         }
-  
+
         const response = await axios.post('http://localhost:5000/api/register', {
-          fullname,
+          firstName: fullname.split(" ")[0], // Lấy tên
+          lastName: fullname.split(" ")[1],   // Lấy họ
           email,
           password,
         });
-  
+
+        console.log('Register Response:', response); // Log phản hồi từ server
+
         if (response.status === 201) {
           toast.success('Đăng ký thành công! Vui lòng đăng nhập.');
-          toggleMode();
+          toggleMode(); // Chuyển sang chế độ đăng nhập
         } else {
           toast.error(response.data.message || 'Đăng ký không thành công.');
         }
       }
     } catch (error) {
-      console.log(error); // Ghi lại lỗi
+      console.log('Error:', error); // Log lỗi
       toast.error(error.response?.data?.message || error.message || 'Có lỗi xảy ra. Vui lòng thử lại!');
     }
   };
-  
 
   if (!isOpen) return null;
 
