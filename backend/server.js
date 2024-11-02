@@ -25,6 +25,9 @@ app.use('/api', authRoutes);
 // Sử dụng route cho product
 app.use('/api', productRoutes);
 
+// sử 
+app.use('/api/order', require('./routes/order'));
+
 
 app.listen(port, () => {
     console.log(`Server đang chạy trên http://localhost:${port}`);
