@@ -4,6 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+// Sử dụng require.context để lấy tất cả hình ảnh từ thư mục uploads
+const images = require.context('../assets', false, /\.(png|jpe?g|svg)$/);
+
 const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => { 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -40,16 +43,24 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
     }
   };
 
+  // Hàm xử lý định dạng giá tiền
+  const formatPrice = (price) => {
+    return price.toLocaleString('vi-VN'); // Định dạng theo chuẩn Việt Nam (dấu phẩy phân cách hàng nghìn)
+  };
+
   return (
     <div>
       <div className="products-grid">
         {currentItems.length > 0 ? (
           currentItems.map(product => (
             <div key={product.product_id} className="product-card" onClick={() => openPopup(product)}>
-              {/* Sử dụng imageUrl từ bảng sản phẩm */}
-              <img src={product.imageUrl} alt={product.product_name} />
+              {/* Sử dụng require.context để load hình ảnh từ thư mục uploads */}
+              <img 
+                src={images(`./${product.imageUrl}`)} 
+                alt={product.product_name} 
+              />
               <h3>{product.product_name}</h3>
-              <p>{product.cost} VND</p>
+              <p>{formatPrice(product.cost)} VND</p> {/* Hiển thị giá tiền đã định dạng */}
             </div>
           ))
         ) : (
@@ -77,8 +88,10 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
               <FontAwesomeIcon icon={faTimes} />
             </span>
             <div className="popup-image">
-              {/* Sử dụng imageUrl cho ảnh trong popup */}
-              <img src={selectedProduct.imageUrl} alt={selectedProduct.product_name} />
+              <img 
+                src={images(`./${selectedProduct.imageUrl}`)} 
+                alt={selectedProduct.product_name} 
+              />
             </div>
             <div className="popup-details">
               <label htmlFor="size">Chọn kích thước:</label>
