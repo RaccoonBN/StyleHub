@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link từ react-router-dom
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; 
 import './navbar.css';
 import AuthPopup from './AuthPopup';
 import CartPopup from './CartPopup';
-import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'; // Thêm FaSearch
+import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 
 const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) => {
@@ -11,7 +11,17 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isCartPopupOpen, setIsCartPopupOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State cho thanh tìm kiếm
+  const [searchQuery, setSearchQuery] = useState('');
+  const [user, setUser] = useState(null); // State lưu thông tin người dùng
+
+  // Kiểm tra người dùng đã đăng nhập chưa khi component được mount
+  useEffect(() => {
+    const loggedUser = JSON.parse(localStorage.getItem('user')); // Lấy thông tin người dùng từ localStorage
+    console.log('User from localStorage:', loggedUser);  // Debug: Kiểm tra thông tin người dùng
+    if (loggedUser) {
+      setUser(loggedUser); // Nếu có, set thông tin người dùng vào state
+    }
+  }, []);
 
   const toggleProductDropdown = () => {
     setProductDropdownOpen(!productDropdownOpen);
@@ -23,14 +33,22 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
     if (productDropdownOpen) setProductDropdownOpen(false);
   };
 
-  const openLoginPopup = () => setIsLoginPopupOpen(true);
-  const closeLoginPopup = () => setIsLoginPopupOpen(false);
+  const openLoginPopup = () => {
+    if (!user) {
+      setIsLoginPopupOpen(true); // Mở popup đăng nhập chỉ khi người dùng chưa đăng nhập
+    }
+  };
+
+  const closeLoginPopup = () => {
+    setIsLoginPopupOpen(false);
+  };
+
   const openCartPopup = () => setIsCartPopupOpen(true);
   const closeCartPopup = () => setIsCartPopupOpen(false);
 
   const handleSearch = async () => {
     try {
-      const response = await fetch('http://localhost:5000/search?query=' + searchQuery);
+      const response = await fetch('http://localhost:5000/api/search?query=' + searchQuery);
       const data = await response.json();
       setFilteredProducts(data);
       console.log(`Tìm kiếm: ${searchQuery}`);
@@ -38,7 +56,11 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
       console.error("Lỗi khi tìm kiếm sản phẩm:", error);
     }
   };
-  
+
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Xóa thông tin người dùng khỏi localStorage khi logout
+    setUser(null); // Reset state người dùng về null
+  };
 
   return (
     <header className="header">
@@ -46,16 +68,15 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
         <div className="logo">
           <img src={logo} alt="Logo StyleHub" />
         </div>
-        {/* Thanh tìm kiếm */}
         <div className="search-bar">
           <input
             type="text"
             placeholder="Tìm kiếm sản phẩm..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Cập nhật giá trị tìm kiếm
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }} // Kích hoạt tìm kiếm khi nhấn Enter
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
           />
-          <FaSearch className="search-icon" onClick={handleSearch} /> 
+          <FaSearch className="search-icon" onClick={handleSearch} />
         </div>
         <ul className="nav-links">
           <li><Link to="/">TRANG CHỦ</Link></li>
@@ -90,9 +111,16 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
               </span>
             )}
           </div>
-          <Link to="#" onClick={openLoginPopup} className="login-link">
-            <FaUserCircle className="icon" /> ĐĂNG NHẬP
-          </Link>
+          {user ? (
+            <div className="user-info">
+              <span>Xin chào, {user.first_name}!</span>
+              <button onClick={handleLogout}>Đăng Xuất</button>
+            </div>
+          ) : (
+            <Link to="#" onClick={openLoginPopup} className="login-link">
+              <FaUserCircle className="icon" /> ĐĂNG NHẬP
+            </Link>
+          )}
         </div>
       </nav>
       {isLoginPopupOpen && (
