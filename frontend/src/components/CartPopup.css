@@ -11,7 +11,39 @@
     align-items: center;
     z-index: 1000; /* Đảm bảo pop-up ở trên cùng */
   }
-  
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    -webkit-appearance: none; /* Loại bỏ kiểu mặc định của checkbox */
+    appearance: none;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #000000; /* Màu nền khi checkbox được chọn */
+    border-color: #000000; /* Màu viền khi checkbox được chọn */
+}
+
+input[type="checkbox"]:checked::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    background-color: white; /* Màu dấu tick */
+    border-radius: 2px;
+}
+
+input[type="checkbox"]:focus {
+    outline: none;
+}
+
   .cart-popup {
     background: white;
     width: 90%;

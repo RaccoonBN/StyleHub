@@ -6,21 +6,40 @@ import CartPopup from './CartPopup';
 import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 
-const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) => {
+const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
   const [productDropdownOpen, setProductDropdownOpen] = useState(false);
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isCartPopupOpen, setIsCartPopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [user, setUser] = useState(null); // State lưu thông tin người dùng
+  const [categories, setCategories] = useState([]); // State lưu danh mục
+  const [brands, setBrands] = useState([]); // State lưu thương hiệu
 
-  // Kiểm tra người dùng đã đăng nhập chưa khi component được mount
+  // Fetch danh mục và thương hiệu từ API backend
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem('user')); // Lấy thông tin người dùng từ localStorage
-    console.log('User from localStorage:', loggedUser);  // Debug: Kiểm tra thông tin người dùng
+    // Kiểm tra người dùng đã đăng nhập chưa khi component được mount
+    const loggedUser = JSON.parse(localStorage.getItem('user')); 
     if (loggedUser) {
       setUser(loggedUser); // Nếu có, set thông tin người dùng vào state
     }
+
+    // Lấy danh mục và thương hiệu từ API backend
+    const fetchCategoriesAndBrands = async () => {
+      try {
+        const categoryResponse = await fetch('http://localhost:5000/api/category');
+        const categoryData = await categoryResponse.json();
+        setCategories(categoryData);
+
+        const brandResponse = await fetch('http://localhost:5000/api/brands');
+        const brandData = await brandResponse.json();
+        setBrands(brandData);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu danh mục và thương hiệu:", error);
+      }
+    };
+
+    fetchCategoriesAndBrands();
   }, []);
 
   const toggleProductDropdown = () => {
@@ -84,9 +103,11 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
             <Link to="/products" onClick={toggleProductDropdown}>SẢN PHẨM</Link>
             {productDropdownOpen && (
               <ul className="dropdown-menu">
-                <li><Link to="/products/clothing">Quần Áo</Link></li>
-                <li><Link to="/products/shoes">Giày/Dép</Link></li>
-                <li><Link to="/products/accessories">Phụ Kiện</Link></li>
+                {categories.map(category => (
+                  <li key={category.cate_name}>
+                    <Link to={`/products/${category.cate_name}`}>{category.cate_name}</Link>
+                  </li>
+                ))}
               </ul>
             )}
           </li>
@@ -94,9 +115,11 @@ const Navbar = ({ cartItems, setCartItems, allProducts, setFilteredProducts }) =
             <Link to="#" onClick={toggleBrandDropdown}>THƯƠNG HIỆU</Link>
             {brandDropdownOpen && (
               <ul className="dropdown-menu">
-                <li><Link to="/brands/nike">Nike</Link></li>
-                <li><Link to="/brands/adidas">Adidas</Link></li>
-                <li><Link to="/brands/puma">Puma</Link></li>
+                {brands.map(brand => (
+                  <li key={brand.brand_name}>
+                    <Link to={`/brands/${brand.brand_name}`}>{brand.brand_name}</Link>
+                  </li>
+                ))}
               </ul>
             )}
           </li>

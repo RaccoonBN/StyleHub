@@ -18,16 +18,16 @@ const AuthPopup = ({ isOpen, onClose }) => {
     const token = localStorage.getItem('token');
     if (token) {
       toast.success('Đã đăng nhập thành công!');
-      onClose(); // Đóng popup nếu người dùng đã đăng nhập
+      onClose(); 
     }
   }, [onClose]);
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
-    setFullname(''); // Reset fullname
-    setEmail(''); // Reset email
-    setPassword(''); // Reset password
-    setConfirmPassword(''); // Reset confirm password
+    setFullname(''); 
+    setEmail('');
+    setPassword(''); 
+    setConfirmPassword(''); 
   };
 
   const handleSubmit = async (e) => {

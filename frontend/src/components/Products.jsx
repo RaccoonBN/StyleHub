@@ -1,17 +1,18 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import './products.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-// Sử dụng require.context để lấy tất cả hình ảnh từ thư mục uploads
+// Sử dụng require.context để lấy tất cả hình ảnh
 const images = require.context('../assets', false, /\.(png|jpe?g|svg)$/);
 
-const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => { 
+const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState('');
+  const [brandName, setBrandName] = useState('');
+  const [categoryName, setCategoryName] = useState('');
 
   const displayProducts = filteredProducts.length > 0 ? filteredProducts : allProducts;
 
@@ -27,20 +28,19 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
 
   const openPopup = (product) => {
     setSelectedProduct(product);
-    setSelectedSize('');
+    fetchBrandName(product.brand_id);
+    fetchCategoryName(product.cate_id);
   };
 
   const closePopup = () => {
     setSelectedProduct(null);
+    setBrandName('');
+    setCategoryName('');
   };
 
-  const handleBuyNow = () => {
-    if (selectedProduct && selectedSize) {
-      console.log(`Mua ngay ${selectedProduct.product_name} với kích thước ${selectedSize}.`);
-      closePopup();
-    } else {
-      alert('Vui lòng chọn kích thước trước khi mua.');
-    }
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    closePopup(); // Đóng popup sau khi thêm sản phẩm vào giỏ hàng
   };
 
   // Hàm xử lý định dạng giá tiền
@@ -48,19 +48,53 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
     return price.toLocaleString('vi-VN'); // Định dạng theo chuẩn Việt Nam (dấu phẩy phân cách hàng nghìn)
   };
 
+  // Fetch tên thương hiệu từ API
+  const fetchBrandName = async (brandId) => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/brands/${brandId}`);
+        if (!response.ok) {
+            throw new Error(`Lỗi khi lấy tên thương hiệu: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setBrandName(data.brand_name); // Lưu tên thương hiệu vào state
+    } catch (error) {
+        console.error('Lỗi khi lấy tên thương hiệu', error);
+        setBrandName('Chưa có thương hiệu');
+    }
+  };
+
+  // Fetch tên danh mục từ API
+  const fetchCategoryName = async (cateId) => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/category/${cateId}`);
+        if (!response.ok) {
+              throw new Error(`Lỗi khi lấy tên danh mục: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setCategoryName(data.cate_name); // Cập nhật tên danh mục vào state
+      } catch (error) {
+          console.error('Lỗi khi lấy tên danh mục', error);
+          setCategoryName('Chưa có danh mục');
+      }
+    };
+
   return (
     <div>
       <div className="products-grid">
         {currentItems.length > 0 ? (
           currentItems.map(product => (
-            <div key={product.product_id} className="product-card" onClick={() => openPopup(product)}>
-              {/* Sử dụng require.context để load hình ảnh từ thư mục uploads */}
+            <div key={product.product_id} className="product-card">
               <img 
                 src={images(`./${product.imageUrl}`)} 
                 alt={product.product_name} 
+                onClick={() => openPopup(product)} 
               />
               <h3>{product.product_name}</h3>
               <p>{formatPrice(product.cost)} VND</p> {/* Hiển thị giá tiền đã định dạng */}
+              
+              <div className="add-to-cart-icon" onClick={() => handleAddToCart(product)}>
+                <FontAwesomeIcon icon={faShoppingCart} />
+              </div>
             </div>
           ))
         ) : (
@@ -84,9 +118,9 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
       {selectedProduct && (
         <div className="popup">
           <div className="popup-content">
-            <span className="close" onClick={closePopup}>
-              <FontAwesomeIcon icon={faTimes} />
-            </span>
+          <span className="close" onClick={closePopup}>
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
             <div className="popup-image">
               <img 
                 src={images(`./${selectedProduct.imageUrl}`)} 
@@ -94,23 +128,16 @@ const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
               />
             </div>
             <div className="popup-details">
-              <label htmlFor="size">Chọn kích thước:</label>
-              <select 
-                id="size" 
-                value={selectedSize} 
-                onChange={(e) => setSelectedSize(e.target.value)}
-              >
-                <option value="">Chọn kích thước</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-              </select>
+              <h3>{selectedProduct.product_name}</h3>
+              <p><strong>Thương hiệu:</strong> {brandName || 'Chưa có thương hiệu'}</p> {/* Tên thương hiệu */}
+              <p><strong>Danh mục:</strong> {categoryName || 'Chưa có danh mục'}</p> {/* Tên danh mục */}
+              <p><strong>Mô tả:</strong> {selectedProduct.description || 'Không có mô tả'}</p> {/* Mô tả sản phẩm nếu có */}
+              <p><strong>Giá:</strong> {formatPrice(selectedProduct.cost)} VND</p>
+              <p><strong>Số lượng tồn kho:</strong> {selectedProduct.quantity || 0}</p> {/* Hiển thị số lượng tồn kho */}
               <div className="popup-buttons">
-                <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize }, closePopup())}>
+                <button onClick={() => handleAddToCart(selectedProduct)}>
                   Thêm vào giỏ hàng
                 </button>
-                <button onClick={handleBuyNow}>Mua ngay</button>
               </div>
             </div>
           </div>

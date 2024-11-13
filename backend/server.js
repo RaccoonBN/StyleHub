@@ -4,6 +4,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth'); // Import routes cho auth
 const productRoutes = require('./routes/productRoutes'); 
+const brandRoutes = require('./routes/brand');
+const categoryRoutes = require('./routes/category');
+const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 const port = 5000;
@@ -21,11 +24,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Sử dụng route cho auth
 app.use('/api', authRoutes);
-
-// Sử dụng route cho product
+app.use('/api', brandRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
-
-// sử 
 app.use('/api/order', require('./routes/order'));
 
 
