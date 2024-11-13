@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth'); // Import routes cho auth
-const productRoutes = require('./routes/product_route'); 
+const productRoutes = require('./routes/productRoutes'); 
 
 const app = express();
 const port = 5000;

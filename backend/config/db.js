@@ -2,9 +2,9 @@ var mysql = require('mysql');
 
 var db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',           // Thay đổi nếu cần
-    password: '',           // Mật khẩu, thay đổi nếu có
-    database: 'stylehub'    // Tên cơ sở dữ liệu
+    user: 'root',           
+    password: '',          
+    database: 'stylehub'    
 });
 
 // Kết nối đến MySQL
