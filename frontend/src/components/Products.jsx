@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ allProducts = [], filteredProducts = [],addToCart }) => { 
+const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => { 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -46,7 +46,8 @@ const Products = ({ allProducts = [], filteredProducts = [],addToCart }) => {
         {currentItems.length > 0 ? (
           currentItems.map(product => (
             <div key={product.product_id} className="product-card" onClick={() => openPopup(product)}>
-              <img src={require(`../assets/${product.images}`)} alt={product.product_name} />
+              {/* Sử dụng imageUrl từ bảng sản phẩm */}
+              <img src={product.imageUrl} alt={product.product_name} />
               <h3>{product.product_name}</h3>
               <p>{product.cost} VND</p>
             </div>
@@ -76,7 +77,8 @@ const Products = ({ allProducts = [], filteredProducts = [],addToCart }) => {
               <FontAwesomeIcon icon={faTimes} />
             </span>
             <div className="popup-image">
-              <img src={require(`../assets/${selectedProduct.images}`)} alt={selectedProduct.product_name} />
+              {/* Sử dụng imageUrl cho ảnh trong popup */}
+              <img src={selectedProduct.imageUrl} alt={selectedProduct.product_name} />
             </div>
             <div className="popup-details">
               <label htmlFor="size">Chọn kích thước:</label>
@@ -92,7 +94,9 @@ const Products = ({ allProducts = [], filteredProducts = [],addToCart }) => {
                 <option value="XL">XL</option>
               </select>
               <div className="popup-buttons">
-                <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize },closePopup())}>Thêm vào giỏ hàng</button>
+                <button onClick={() => addToCart({ ...selectedProduct, size: selectedSize }, closePopup())}>
+                  Thêm vào giỏ hàng
+                </button>
                 <button onClick={handleBuyNow}>Mua ngay</button>
               </div>
             </div>
