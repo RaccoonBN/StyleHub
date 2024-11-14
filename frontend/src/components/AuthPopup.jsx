@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+// frontend/src/components/AuthPopup.jsx
+import React, { useState } from 'react';
 import './authPopup.css';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const AuthPopup = ({ isOpen, onClose }) => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -13,21 +16,12 @@ const AuthPopup = ({ isOpen, onClose }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // Kiểm tra xem người dùng đã đăng nhập hay chưa bằng cách xem token trong localStorage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      toast.success('Đã đăng nhập thành công!');
-      onClose(); 
-    }
-  }, [onClose]);
-
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
-    setFullname(''); 
-    setEmail('');
-    setPassword(''); 
-    setConfirmPassword(''); 
+    setFullname(''); // Reset fullname
+    setEmail(''); // Reset email
+    setPassword(''); // Reset password
+    setConfirmPassword(''); // Reset confirm password
   };
 
   const handleSubmit = async (e) => {
@@ -44,10 +38,8 @@ const AuthPopup = ({ isOpen, onClose }) => {
         console.log('Login Response:', response); // Log phản hồi từ server
 
         if (response.status === 200) {
-          // Lưu token và thông tin người dùng vào localStorage (nếu có)
+          // Lưu token vào localStorage (nếu có) và thông báo thành công
           localStorage.setItem('token', response.data.token); // Lưu token nếu server trả về
-          localStorage.setItem('user', JSON.stringify(response.data.user)); // Lưu thông tin người dùng vào localStorage
-
           toast.success('Đăng nhập thành công!');
           onClose();
         } else {
