@@ -1,0 +1,117 @@
+/* ManageProducts.css */
+.manage-products-container {
+    padding: 20px;
+    background-color: #f9f9f9; /* Màu nền sáng */
+    margin-left: 250px;
+}
+
+.product-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Khoảng cách giữa các card */
+}
+
+.product-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 220px; /* Đã điều chỉnh chiều rộng card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Căn giữa nội dung */
+}
+
+.product-card img {
+    width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng card */
+    height: auto; /* Tự động điều chỉnh chiều cao */
+    border-radius: 4px; /* Bo góc hình ảnh */
+}
+.product-card p { /* Mô tả sản phẩm và các thông tin khác */
+    color: rgb(0, 0, 0); /* Màu chữ đen */
+}
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px; /* Đã điều chỉnh chiều rộng của popup */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-preview {
+    margin-top: 10px;
+    width: 50%; /* Chiều rộng hình ảnh preview */
+    height: auto; /* Tự động điều chỉnh chiều cao */
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between; /* Căn giữa các nút */
+    margin-top: 15px; /* Khoảng cách trên của button group */
+}
+
+.add-button, .edit-button, .delete-button, .submit-button, .close-button {
+    padding: 10px 15px; /* Đệm cho các button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-button {
+    background-color: #4CAF50; /* Màu xanh lá cho nút thêm */
+    color: white;
+}
+
+.edit-button {
+    background-color: #2196F3; /* Màu xanh dương cho nút chỉnh sửa */
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336; /* Màu đỏ cho nút xóa */
+    color: white;
+}
+
+.submit-button {
+    background-color: #008CBA; /* Màu xanh lam cho nút cập nhật */
+    color: white;
+}
+
+.close-button {
+    background-color: #e7e7e7; /* Màu xám cho nút đóng */
+    color: black;
+}
+
+.add-button:hover,
+.edit-button:hover,
+.delete-button:hover,
+.submit-button:hover,
+.close-button:hover {
+    opacity: 0.9; /* Giảm độ mờ khi hover */
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-top: 10px;
+  }

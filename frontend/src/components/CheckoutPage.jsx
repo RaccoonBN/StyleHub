@@ -31,7 +31,6 @@ const CheckoutPage = () => {
             alert('Vui lòng điền đầy đủ thông tin.');
             return;
         }
-    
         if (paymentMethod === 'VNPAY') {
             try {
                 const response = await fetch('http://localhost:5000/api/vnpay/create_payment_url', {
@@ -40,20 +39,17 @@ const CheckoutPage = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        orderDetails: orderDetails,
-                        fullName: fullName,
-                        phoneNumber: phoneNumber,
-                        email: email,
-                        address: address,
-                        totalAmount: calculateTotal(),
+                        products: orderDetails,
+                        totalAmount: calculateTotal,
+                        bankCode: null,
+                        language: "vn",
                     }),
                 });
-    
+
                 const data = await response.json();
     
                 if (data.url) {
-                    // Chuyển hướng người dùng đến trang thanh toán của VNPAY
-                    window.location.href = data.url;
+                    window.location.href = data.url;  // Chuyển hướng đến trang thanh toán VNPAY
                 } else {
                     alert('Lỗi khi tạo yêu cầu thanh toán VNPAY.');
                 }
@@ -62,7 +58,6 @@ const CheckoutPage = () => {
                 alert('Đã xảy ra lỗi khi thanh toán.');
             }
         } else {
-            // Xử lý thanh toán khi nhận hàng (COD)
             alert('Đặt hàng thành công. Chúng tôi sẽ giao hàng theo địa chỉ bạn cung cấp.');
             navigate('/');
         }
