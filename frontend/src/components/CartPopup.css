@@ -1,125 +1,187 @@
 /* src/components/CartPopup.css */
+
+/* Màn hình phủ khi mở giỏ hàng */
 .cart-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Đảm bảo pop-up ở trên cùng */
-  }
-  input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    cursor: pointer;
-    -webkit-appearance: none; /* Loại bỏ kiểu mặc định của checkbox */
-    appearance: none;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    position: relative;
-    transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Đảm bảo pop-up ở trên cùng */
+}
+
+/* Thiết kế checkbox */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  -webkit-appearance: none; /* Loại bỏ kiểu mặc định của checkbox */
+  appearance: none;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 input[type="checkbox"]:checked {
-    background-color: #000000; /* Màu nền khi checkbox được chọn */
-    border-color: #000000; /* Màu viền khi checkbox được chọn */
+  background-color: #000000; /* Màu nền khi checkbox được chọn */
+  border-color: #000000; /* Màu viền khi checkbox được chọn */
 }
 
 input[type="checkbox"]:checked::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 10px;
-    height: 10px;
-    background-color: white; /* Màu dấu tick */
-    border-radius: 2px;
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: white; /* Màu dấu tick */
+  border-radius: 2px;
 }
 
 input[type="checkbox"]:focus {
-    outline: none;
+  outline: none;
 }
 
-  .cart-popup {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    position: relative;
-    max-height: 600px; /* Đặt chiều cao tối đa cho popup */
-    overflow: hidden; /* Ẩn các phần tử ngoài giới hạn */
-  }
-  
-  .popup-header {
-    display: flex;
-    justify-content: space-between; /* Căn giữa các phần tử */
-    align-items: center;
-  }
-  
-  .close-icon {
-    cursor: pointer;
-    font-size: 20px;
-    color: #333;
-  }
-  
-  .cart-items {
-    margin-top: 20px;
-    max-height: 400px; /* Giới hạn chiều cao cho danh sách sản phẩm */
-    overflow-y: auto; /* Hiển thị thanh cuộn theo chiều dọc */
-    padding: 10px; /* Khoảng cách giữa các sản phẩm */
-  }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-  }
-  
-  .cart-item-image {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    margin-right: 10px;
-  }
-  
-  .cart-item-info {
-    flex-grow: 1;
-  }
-  
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-  }
-  
-  .quantity-controls button {
-    margin: 0 5px;
-  }
-  
-  .remove-button {
-    margin-left: 10px;
-    color: red;
-  }
-  
-  .order-button {
-    margin-top: 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .order-button:hover {
-    background-color: #218838;
-  }
-  
+/* Popup giỏ hàng */
+.cart-popup {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  max-height: 600px; /* Đặt chiều cao tối đa cho popup */
+  overflow: hidden; /* Ẩn các phần tử ngoài giới hạn */
+}
+
+/* Header của popup */
+.popup-header {
+  display: flex;
+  justify-content: space-between; /* Căn giữa các phần tử */
+  align-items: center;
+}
+
+/* Biểu tượng đóng popup */
+.close-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
+/* Danh sách các sản phẩm trong giỏ hàng */
+.cart-items {
+  margin-top: 20px;
+  max-height: 400px; /* Giới hạn chiều cao cho danh sách sản phẩm */
+  overflow-y: auto; /* Hiển thị thanh cuộn theo chiều dọc */
+  padding: 10px; /* Khoảng cách giữa các sản phẩm */
+}
+
+/* Mỗi mục trong giỏ hàng */
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Ảnh sản phẩm */
+.cart-item-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Thông tin sản phẩm */
+.cart-item-info {
+  flex-grow: 1;
+}
+
+/* Điều khiển số lượng */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* Các nút điều khiển số lượng */
+.quantity-controls button {
+  margin: 0 5px;
+}
+
+/* Nút xóa sản phẩm */
+.remove-button {
+  margin-left: 10px;
+  color: red;
+}
+
+/* Nút đặt hàng */
+.order-button {
+  margin-top: 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.order-button:hover {
+  background-color: #218838;
+}
+
+/* Định dạng cho số lượng sản phẩm */
+.cart-item-quantity {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 3px;
+}
+
+/* Nút tăng giảm số lượng */
+.cart-item-quantity-btn {
+  background-color: #000000;  /* Màu nền đen */
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  color: white; /* Màu chữ trắng */
+}
+
+/* Nút tăng số lượng */
+.cart-item-btn-increase {
+  background-color: #000000;  /* Màu nền đen cho nút tăng */
+  color: white; /* Màu chữ trắng */
+}
+
+.cart-item-btn-increase:hover {
+  background-color: #333333; /* Màu nền đậm hơn khi hover */
+}
+
+.quantity-controls button {
+  background-color: #000000;  /* Màu nền đen */
+  color: white; /* Màu chữ trắng */
+  border: none; /* Loại bỏ viền mặc định */
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px; /* Viền bo tròn */
+  cursor: pointer; /* Hiển thị con trỏ tay khi hover */
+}
+
+.cart-item-btn-remove:hover {
+  background-color: #ff1a1a; /* Màu đỏ đậm khi hover */
+}
+
+/* Đảm bảo không có viền xung quanh các nút khi được focus */
+.cart-item-quantity-btn:focus {
+  outline: none;
+}

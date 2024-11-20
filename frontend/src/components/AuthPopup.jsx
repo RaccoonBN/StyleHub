@@ -1,14 +1,11 @@
-// frontend/src/components/AuthPopup.jsx
 import React, { useState } from 'react';
 import './authPopup.css';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
-const AuthPopup = ({ isOpen, onClose }) => {
+const AuthPopup = ({ isOpen, onClose, onLogout }) => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -18,48 +15,48 @@ const AuthPopup = ({ isOpen, onClose }) => {
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
-    setFullname(''); // Reset fullname
-    setEmail(''); // Reset email
-    setPassword(''); // Reset password
-    setConfirmPassword(''); // Reset confirm password
+    setFullname('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', { fullname, email, password, confirmPassword, isLoginMode }); // Log dữ liệu gửi đi
-
+    console.log('Form Data:', { fullname, email, password, confirmPassword, isLoginMode });
+  
+    // Kiểm tra trước khi gửi yêu cầu đăng nhập/đăng ký
+    if (!email || !password || (isLoginMode && !password)) {
+      toast.error('Vui lòng điền đầy đủ thông tin.');
+      return;
+    }
+  
     try {
+      // Đăng nhập
       if (isLoginMode) {
-        const response = await axios.post('http://localhost:5000/api/login', {
-          email,
-          password,
-        });
-
-        console.log('Login Response:', response); // Log phản hồi từ server
-
+        const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+  
         if (response.status === 200) {
-          // Lưu token vào localStorage (nếu có) và thông báo thành công
-          localStorage.setItem('token', response.data.token); // Lưu token nếu server trả về
+          localStorage.setItem('user', JSON.stringify(response.data.user));
           toast.success('Đăng nhập thành công!');
-          onClose();
+          onClose(); // Đóng modal sau khi đăng nhập thành công
         } else {
           toast.error(response.data.message || 'Đăng nhập không thành công.');
         }
       } else {
+        // Đăng ký
         if (password !== confirmPassword) {
           toast.error('Mật khẩu không khớp. Vui lòng thử lại!');
           return;
         }
-
-        const response = await axios.post('http://localhost:5000/api/register', {
-          firstName: fullname.split(" ")[0], // Lấy tên
-          lastName: fullname.split(" ")[1],   // Lấy họ
+  
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
+          firstName: fullname.split(' ')[0],
+          lastName: fullname.split(' ').slice(1).join(' '),
           email,
           password,
         });
-
-        console.log('Register Response:', response); // Log phản hồi từ server
-
+  
         if (response.status === 201) {
           toast.success('Đăng ký thành công! Vui lòng đăng nhập.');
           toggleMode(); // Chuyển sang chế độ đăng nhập
@@ -68,23 +65,24 @@ const AuthPopup = ({ isOpen, onClose }) => {
         }
       }
     } catch (error) {
-      console.log('Error:', error); // Log lỗi
-      toast.error(error.response?.data?.message || error.message || 'Có lỗi xảy ra. Vui lòng thử lại!');
+      console.log('Error:', error);
+      toast.error(error.response?.data?.message || 'Có lỗi xảy ra. Vui lòng thử lại!');
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Không hiển thị form nếu modal không mở
+  
 
   return (
     <div className="auth-popup-overlay">
-      <div className="auth-popup">
+      <div className="auth-popup-container">
         <h2>{isLoginMode ? 'Đăng Nhập' : 'Đăng Ký'}</h2>
         <form onSubmit={handleSubmit}>
           {!isLoginMode && (
-            <div className="form-group">
+            <div className="auth-popup-form-group">
               <label htmlFor="fullname">Họ tên</label>
-              <div className="input-with-icon">
-                <FaUser className="input-icon" />
+              <div className="auth-popup-input-with-icon">
+                <FaUser className="auth-popup-input-icon" />
                 <input
                   type="text"
                   id="fullname"
@@ -95,10 +93,10 @@ const AuthPopup = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-          <div className="form-group">
+          <div className="auth-popup-form-group">
             <label htmlFor="email">Email</label>
-            <div className="input-with-icon">
-              <FaEnvelope className="input-icon" />
+            <div className="auth-popup-input-with-icon">
+              <FaEnvelope className="auth-popup-input-icon" />
               <input
                 type="email"
                 id="email"
@@ -108,10 +106,10 @@ const AuthPopup = ({ isOpen, onClose }) => {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="auth-popup-form-group">
             <label htmlFor="password">Mật khẩu</label>
-            <div className="input-with-icon">
-              <FaLock className="input-icon" />
+            <div className="auth-popup-input-with-icon">
+              <FaLock className="auth-popup-input-icon" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
@@ -119,16 +117,19 @@ const AuthPopup = ({ isOpen, onClose }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <span className="toggle-password-visibility" onClick={() => setShowPassword(!showPassword)}>
+              <span
+                className="auth-popup-toggle-password-visibility"
+                onClick={() => setShowPassword(!showPassword)}
+              >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
           {!isLoginMode && (
-            <div className="form-group">
+            <div className="auth-popup-form-group">
               <label htmlFor="confirm-password">Nhập lại mật khẩu</label>
-              <div className="input-with-icon">
-                <FaLock className="input-icon" />
+              <div className="auth-popup-input-with-icon">
+                <FaLock className="auth-popup-input-icon" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="confirm-password"
@@ -139,13 +140,17 @@ const AuthPopup = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-          <button type="submit">{isLoginMode ? 'Đăng Nhập' : 'Đăng Ký'}</button>
-          <p onClick={toggleMode}>
+          <button type="submit" className="auth-popup-submit-btn">
+            {isLoginMode ? 'Đăng Nhập' : 'Đăng Ký'}
+          </button>
+          <p className="auth-popup-toggle-mode" onClick={toggleMode}>
             {isLoginMode ? 'Bạn chưa có tài khoản? Đăng ký ngay' : 'Bạn đã có tài khoản? Đăng nhập'}
           </p>
         </form>
         <ToastContainer />
-        <button className="close-popup" onClick={onClose}>Đóng</button>
+        <button className="auth-popup-close-icon" onClick={onClose}>
+          <FaTimes />
+        </button>
       </div>
     </div>
   );

@@ -14,8 +14,6 @@ body, html {
   z-index: 2000; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
   padding: 10px 20px;
   background-color: black; /* Thanh navbar màu đen */
-  z-index: 1500; /* Đảm bảo navbar không bị chồng lên các phần tử khác */
-
 }
 
 .logo {
@@ -144,7 +142,7 @@ body, html {
   display: flex;
   align-items: center;
   max-width: 300px;
-  margin-top: -10px; 
+  margin-top: 5px; 
 }
 
 .search-bar input {
@@ -158,7 +156,7 @@ body, html {
 
 .search-icon {
   margin-left: 10px;
-  margin-top: 12px;
+  margin-top: 5px;
   cursor: pointer;
   font-size: 20px;
   color: white;
@@ -166,4 +164,116 @@ body, html {
 
 .search-icon:hover {
   color: #555;
+}
+/* Container cho thông tin người dùng */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative; /* Cần thiết cho dropdown */
+}
+
+/* Chữ chào mừng */
+.welcome-text {
+  color: white;
+  font-size: 16px;
+}
+
+/* Menu container */
+/* Menu container */
+.menu-container {
+  position: relative;
+  width: auto;
+}
+
+/* Toggle button for the dropdown menu */
+.menu-toggle {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px; /* Kích thước biểu tượng */
+  display: flex;
+  align-items: center;
+}
+
+/* Menu icon */
+.menu-icon {
+  font-size: 20px; /* Kích thước biểu tượng */
+  margin-right: 8px; /* Khoảng cách với chữ */
+}
+
+/* Dropdown menu */
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #333;
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  display: block;
+  min-width: 200px; /* Đặt chiều rộng tối thiểu */
+  transition: all 0.3s ease-in-out; /* Hiệu ứng mượt mà khi mở dropdown */
+}
+
+/* Menu items */
+.menu-item {
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 10px 20px; /* Tăng khoảng cách để đẹp hơn */
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px; /* Bo góc menu items */
+  font-size: 16px; /* Cùng một kích thước chữ cho tất cả mục menu */
+}
+
+/* Đảm bảo tất cả các mục menu có kích thước chữ giống nhau */
+.menu-item .menu-icon {
+  margin-right: 10px;
+  font-size: 20px; /* Kích thước biểu tượng */
+}
+
+/* Hiệu ứng hover cho các menu items */
+.menu-item:hover {
+  background-color: #444; /* Màu nền khi hover */
+  color: white; /* Màu chữ không thay đổi */
+}
+
+/* Logout button */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  color: white;
+  background-color: transparent;
+  border: none;
+  padding: 8px 20px; /* Khoảng cách vừa phải */
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 5px; /* Bo góc cho logout button */
+  font-size: 16px; /* Cùng kích thước chữ với menu items */
+}
+
+/* Đổi màu nền khi hover trên nút đăng xuất */
+.logout-btn:hover {
+  background-color: #e74c3c; /* Màu đỏ khi hover */
+  color: white; /* Đảm bảo màu chữ trắng khi hover */
+}
+
+.logout-btn .menu-icon {
+  margin-right: 10px; /* Khoảng cách giữa biểu tượng và chữ */
+  font-size: 20px; /* Kích thước biểu tượng */
+}
+
+/* Thêm hiệu ứng cho các mục khi hover */
+.menu-item:hover,
+.logout-btn:hover {
+  background-color: #444;
+  color: white;
 }

@@ -5,7 +5,8 @@ import About from './pages/AboutPage';
 import Footer from './components/Footer'; 
 import Navbar from './components/Navbar'; 
 import Products from './components/Products';
-import AuthPopup from './components/AuthPopup'; // Thêm AuthPopup vào import
+import AuthPopup from './components/AuthPopup'; 
+import CheckoutPage from './components/CheckoutPage'; 
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -62,6 +63,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} /> 
           <Route path="/about" element={<About />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
         </Routes>
         <Footer />

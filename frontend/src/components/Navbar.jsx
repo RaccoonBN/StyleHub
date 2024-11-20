@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './navbar.css';
 import AuthPopup from './AuthPopup';
 import CartPopup from './CartPopup';
-import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'; 
+import { FaShoppingCart, FaUserCircle, FaSearch, FaBars, FaSignOutAlt,FaHistory } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 
 const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
@@ -61,6 +61,20 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
   const closeLoginPopup = () => {
     setIsLoginPopupOpen(false);
   };
+  const [menuOpen, setMenuOpen] = useState(false); // Quản lý trạng thái menu
+
+  // Xử lý click bên ngoài menu để đóng
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.menu-container')) {
+        setMenuOpen(false); // Đóng menu nếu click bên ngoài
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const openCartPopup = () => setIsCartPopupOpen(true);
   const closeCartPopup = () => setIsCartPopupOpen(false);
@@ -77,9 +91,10 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Xóa thông tin người dùng khỏi localStorage khi logout
+    sessionStorage.removeItem('user'); // Xóa thông tin người dùng khỏi sessionStorage khi logout
     setUser(null); // Reset state người dùng về null
   };
+
 
   return (
     <header className="header">
@@ -135,10 +150,33 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
             )}
           </div>
           {user ? (
-            <div className="user-info">
-              <span>Xin chào, {user.first_name}!</span>
-              <button onClick={handleLogout}>Đăng Xuất</button>
-            </div>
+        <div className="user-info">
+          <span className="welcome-text">Xin chào, {user.last_name}!</span>
+          <div className="menu-container">
+            <button
+              className="menu-toggle"
+              onClick={() => setMenuOpen((prev) => !prev)} // Chuyển trạng thái menu
+            >
+              <FaBars className="menu-icon" />
+            </button>
+            {menuOpen && (
+              <ul className="menu-dropdown">
+                <li>
+                  <Link to="/order-history" className="menu-item">
+                  <FaHistory className="menu-icon" /> {/* Biểu tượng lịch sử */}
+                    Lịch sử đặt hàng
+                  </Link>
+                </li>
+                <li>
+                <button onClick={handleLogout} className="menu-item logout-btn">
+                  <FaSignOutAlt className="menu-icon" />
+                  Đăng xuất
+                </button>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
           ) : (
             <Link to="#" onClick={openLoginPopup} className="login-link">
               <FaUserCircle className="icon" /> ĐĂNG NHẬP

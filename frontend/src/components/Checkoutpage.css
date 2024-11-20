@@ -1,0 +1,111 @@
+/* CSS cho form checkout */
+
+.checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-header {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.order-details {
+    margin-bottom: 20px;
+}
+
+.order-details h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.order-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-details li {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+.total-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.form-input, .form-select {
+    padding: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-input:focus, .form-select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.checkout-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive: Khi chiều rộng màn hình nhỏ, tăng khoảng cách giữa các phần tử */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 15px;
+    }
+
+    .checkout-header {
+        font-size: 20px;
+    }
+
+    .form-group {
+        flex-direction: column;
+    }
+
+    .form-input, .form-select {
+        font-size: 14px;
+    }
+
+    .checkout-button {
+        font-size: 16px;
+    }
+}

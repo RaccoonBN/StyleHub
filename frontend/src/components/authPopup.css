@@ -1,4 +1,13 @@
+/* authPopup.css */
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif; /* Font chữ toàn bộ body */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 .auth-popup-overlay {
   position: fixed;
@@ -6,144 +15,120 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.8); /* Màu nền mờ đen */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  font-family: 'Montserrat', sans-serif;
+  z-index: 1000; /* Đảm bảo pop-up ở trên các phần khác */
 }
 
-.auth-popup {
-  background-color: #1e1e2f;
-  border-radius: 10px;
-  padding: 30px;
-  width: 420px;
-  max-width: 90%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-  color: #f3f3f3;
-  animation: fadeIn 0.3s ease;
+.auth-popup-container {
+  background: #ffffff; /* Nền trắng cho container */
+  border-radius: 8px;
+  z-index: 3000;
+  padding: 20px 30px;
+  width: 400px; /* Chiều rộng của pop-up */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+  position: relative; /* Vị trí để chứa các phần tử con */
 }
 
-.auth-popup h2 {
+h2 {
   text-align: center;
-  font-weight: 600;
-  font-size: 24px;
+  color: #333333;
   margin-bottom: 20px;
-  color: #e0e0e0;
 }
 
-.form-group {
-  margin-bottom: 18px;
+.auth-popup-form-group {
+  margin-bottom: 20px;
 }
 
-.input-with-icon {
+.auth-popup-input-with-icon {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.auth-popup-input-icon {
   position: absolute;
-  left: 12px;
-  color: #5ab9ec;
+  left: 10px;
+  color: #000000;
   font-size: 18px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input {
   width: 100%;
-  padding: 12px 16px 12px 38px;
-  border: 1px solid #5ab9ec;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  color: #333;
-  transition: all 0.3s ease;
-  font-size: 15px;
-  box-sizing: border-box;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border-color: #71d4fa;
-  background-color: #fcfcfc;
+  padding: 10px 10px 10px 35px; /* Padding với khoảng cách cho icon */
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333333;
   outline: none;
+  transition: border-color 0.3s;
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder {
-  color: #aaa;
+input:focus {
+  border-color: #000000;
+  background-color: #ffffff;
 }
 
-.toggle-password-visibility {
+.auth-popup-toggle-password-visibility {
   position: absolute;
-  right: 12px;
-  font-size: 18px;
-  color: #5ab9ec;
+  right: 10px;
   cursor: pointer;
+  color: #888888;
+  font-size: 18px;
 }
 
-button[type="submit"] {
+button.auth-popup-submit-btn {
   width: 100%;
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
-  background-color: #5ab9ec;
-  color: #fff;
+  color: #ffffff;
+  background-color: #000000;
   border: none;
-  border-radius: 25px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s;
+}
+
+button.auth-popup-submit-btn:hover {
+  background-color: #000000;
+}
+
+.auth-popup-toggle-mode {
+  text-align: center;
   margin-top: 10px;
-}
-
-button[type="submit"]:hover {
-  background-color: #71d4fa;
-  transform: translateY(-2px);
-}
-
-.auth-popup p {
-  color: #5ab9ec;
-  font-size: 14px;
+  color: #000000;
   cursor: pointer;
-  text-align: center;
-  margin-top: 20px;
-  transition: color 0.3s ease;
 }
 
-.auth-popup p:hover {
-  color: #71d4fa;
+.auth-popup-toggle-mode:hover {
+  text-decoration: underline;
 }
 
-.close-popup {
-  background-color: #ec5a5a;
-  color: white;
+
+.auth-popup-close-icon {
+  background: none;
   border: none;
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  font-size: 1.5rem;
+  color: #333;
   cursor: pointer;
-  text-align: center;
-  width: 100%;
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.close-popup:hover {
-  background-color: #ff7b7b;
-  transform: translateY(-2px);
+.auth-popup-close-icon:hover {
+  color: #ff0000;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.Toastify__toast {
+  position: fixed;
+  top: 90px; 
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999; 
+  width: auto;
 }
