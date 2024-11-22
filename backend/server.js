@@ -16,7 +16,7 @@ const port = 5000;
 app.use(session({
     secret: 'YJaRa4uuKD',   
     resave: false,               // Không lưu lại session nếu không thay đổi
-    saveUninitialized: true,     // Lưu session mặc dù chưa có gì thay đổi
+    saveUninitialized: false,     // Chỉ lưu session nếu có gì thay đổi
     cookie: { secure: false },  
   }));
   

@@ -58,9 +58,9 @@ router.post('/login', (req, res) => {
         last_name: user.last_name,
         email: user.email,
       };
-  
-      res.status(200).json({
+        res.status(200).json({
         message: 'Đăng nhập thành công',
+        acc_id: user.acc_id , // Trả về acc_id để frontend có thể lưu vào localStorage
         user: req.session.user,
       });
     });

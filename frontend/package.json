@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
+    "config": "^3.3.12",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
@@ -29,7 +31,7 @@
   "scripts": {
     "eslint": "eslint . --ext .js,.jsx",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node backend/server.js",
+    "server": "node ../backend/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
