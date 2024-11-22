@@ -61,6 +61,7 @@
     padding: 5px; /* Kích thước nhỏ cho nút */
     margin: 0 2px; /* Khoảng cách giữa các nút */
     cursor: pointer;
+    color:#000000;
     transition: background-color 0.2s;
     font-size: 12px; /* Kích thước font nhỏ hơn */
     width: 30px; /* Chiều rộng cố định cho nút */

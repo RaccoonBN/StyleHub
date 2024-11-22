@@ -7,6 +7,9 @@ import Navbar from './components/Navbar';
 import Products from './components/Products';
 import AuthPopup from './components/AuthPopup'; 
 import CheckoutPage from './components/CheckoutPage'; 
+import AdminDashboard from './components/admin/AdminDashboard';
+import ManageUsers from './components/admin/ManageUsers';
+import ManageProducts from './components/admin/ManageProducts';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -101,8 +104,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} /> 
           <Route path="/about" element={<About />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<ManageUsers />} />
+          <Route path="/admin/products" element={<ManageProducts />} />
         </Routes>
         <Footer />
         <AuthPopup isOpen={isPopupOpen} onClose={handleClosePopup} /> {/* Thêm AuthPopup */}

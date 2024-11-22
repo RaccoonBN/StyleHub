@@ -158,7 +158,6 @@ input[type="checkbox"]:focus {
 
 /* Nút tăng số lượng */
 .cart-item-btn-increase {
-  background-color: #000000;  /* Màu nền đen cho nút tăng */
   color: white; /* Màu chữ trắng */
 }
 

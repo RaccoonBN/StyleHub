@@ -1,0 +1,62 @@
+/* Sidebar.css */
+.sidebar {
+  width: 250px; /* Chiều rộng của sidebar */
+  height: 100vh; /* Chiều cao chiếm toàn bộ màn hình */
+  background-color: black; /* Màu nền đen */
+  color: white; /* Màu chữ trắng */
+  position: fixed; /* Gắn sidebar cố định */
+  top: 0; /* Bắt đầu từ trên cùng */
+  left: 0; /* Bắt đầu từ bên trái */
+  padding-top: 30px; /* Khoảng cách từ đầu */
+  display: flex;
+  flex-direction: column; /* Bố cục dọc */
+  z-index: 1000; /* Đảm bảo sidebar hiển thị trên các thành phần khác */
+}
+
+.logo-container {
+  display: flex; /* Sử dụng flex để căn giữa */
+  justify-content: center; /* Căn giữa logo */
+  margin-bottom: 20px; /* Khoảng cách dưới logo */
+}
+
+.sidebar-logo {
+  width: 80%; /* Điều chỉnh chiều rộng của logo */
+  max-width: 150px; /* Đặt chiều rộng tối đa cho logo */
+  height: auto; /* Giữ tỉ lệ chiều cao */
+}
+
+.sidebar ul {
+  list-style-type: none; /* Bỏ dấu đầu dòng */
+  padding: 0; /* Bỏ padding */
+  margin: 0; /* Bỏ margin */
+}
+
+.sidebar li {
+  padding: 20px 30px; /* Khoảng cách cho các item */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+}
+
+.sidebar li a {
+  color: white; /* Màu chữ trắng */
+  text-decoration: none; /* Bỏ gạch chân */
+  display: flex; /* Hiển thị theo kiểu flex */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  border-radius: 15px; /* Bo góc cho các item */
+  padding: 10px; /* Khoảng cách bên trong item */
+  transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu nền và màu chữ */
+}
+
+.sidebar li a:hover {
+  background-color: #007bff; /* Màu nền khi hover (xanh dương) */
+  color: white; /* Màu chữ trắng khi hover */
+}
+
+.sidebar li a.active {
+  background-color: #1abc9c; /* Màu nền khi được chọn (màu xanh lá) */
+  color: white; /* Màu chữ trắng khi được chọn */
+}
+
+.sidebar-icon {
+  margin-right: 15px; /* Khoảng cách giữa icon và chữ */
+  font-size: 1.5em; /* Kích thước icon lớn hơn */
+}
