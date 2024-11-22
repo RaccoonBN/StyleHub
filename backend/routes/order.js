@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');  // Giả sử bạn có một file config/db.js kết nối với cơ sở dữ liệu
+const db = require('../config/db'); 
 
 // 1. Route để tạo đơn hàng mới
 router.post('/create', (req, res) => {
