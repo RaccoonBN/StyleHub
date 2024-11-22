@@ -1,75 +1,112 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db'); // Kết nối tới MySQL
+const db = require('../config/db'); 
+
+// Lấy thông tin giỏ hàng
+router.get('/cart', (req, res) => {
+    const { acc_id } = req.query;
+
+    if (!acc_id) {
+        return res.status(400).json({ message: 'Cần đăng nhập để xem giỏ hàng' });
+    }
+
+    const query = `
+        SELECT cart.quantity, products.imageUrl, products.product_name, products.cost, products.product_id
+        FROM cart 
+        JOIN products ON cart.product_id = products.product_id
+        WHERE cart.acc_id = ?`;
+
+    db.query(query, [acc_id], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: 'Lỗi khi lấy giỏ hàng', error });
+        }
+        res.json(results);
+    });
+});
 
 // Thêm sản phẩm vào giỏ hàng
-router.post('/add-to-cart', (req, res) => {
-  const { acc_id, product_id, quantity } = req.body;
+router.post('/addcart', (req, res) => {
+    const { product_id, quantity, acc_id } = req.body;
+    // Lấy giá trị thực của product_id
+    const actualProductId = product_id?.product_id;
 
-  if (!acc_id || !product_id || !quantity) {
-    return res.status(400).json({ message: 'acc_id, product_id, và quantity là bắt buộc' });
-  }
-
-  // Kiểm tra xem người dùng đã có giỏ hàng chưa
-  const checkCartQuery = 'SELECT * FROM cart WHERE acc_id = ?';
-  db.query(checkCartQuery, [acc_id], (err, cartResults) => {
-    if (err) {
-      console.error('Lỗi khi kiểm tra giỏ hàng:', err);
-      return res.status(500).json({ message: 'Lỗi khi kiểm tra giỏ hàng' });
+    if (!actualProductId || !acc_id || quantity <= 0) {
+        return res.status(400).json({ message: 'Dữ liệu không hợp lệ' });
     }
 
-    // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
-    if (cartResults.length === 0) {
-      const createCartQuery = 'INSERT INTO cart (acc_id) VALUES (?)';
-      db.query(createCartQuery, [acc_id], (err, createResults) => {
+    const checkQuery = 'SELECT * FROM cart WHERE product_id = ? AND acc_id = ?';
+
+    db.query(checkQuery, [actualProductId, acc_id], (err, results) => {
         if (err) {
-          console.error('Lỗi khi tạo giỏ hàng:', err);
-          return res.status(500).json({ message: 'Lỗi khi tạo giỏ hàng' });
+            return res.status(500).json({ message: 'Lỗi khi kiểm tra giỏ hàng', error: err });
         }
 
-        // Sau khi tạo giỏ hàng mới, thêm sản phẩm vào giỏ
-        const insertQuery = 'INSERT INTO cart_items (acc_id, product_id, quantity) VALUES (?, ?, ?)';
-        db.query(insertQuery, [acc_id, product_id, quantity], (err, insertResults) => {
-          if (err) {
-            console.error('Lỗi khi thêm sản phẩm vào giỏ:', err);
-            return res.status(500).json({ message: 'Lỗi khi thêm sản phẩm vào giỏ' });
-          }
-          res.status(200).json({ success: true, message: 'Sản phẩm đã được thêm vào giỏ hàng mới' });
-        });
-      });
-    } else {
-      // Nếu giỏ hàng đã tồn tại, kiểm tra xem sản phẩm có trong giỏ không
-      const checkProductQuery = 'SELECT * FROM cart_items WHERE acc_id = ? AND product_id = ?';
-      db.query(checkProductQuery, [acc_id, product_id], (err, productResults) => {
-        if (err) {
-          console.error('Lỗi khi kiểm tra sản phẩm trong giỏ:', err);
-          return res.status(500).json({ message: 'Lỗi khi kiểm tra sản phẩm trong giỏ' });
-        }
-
-        if (productResults.length > 0) {
-          // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
-          const updateQuery = 'UPDATE cart_items SET quantity = quantity + ? WHERE acc_id = ? AND product_id = ?';
-          db.query(updateQuery, [quantity, acc_id, product_id], (err, updateResults) => {
-            if (err) {
-              console.error('Lỗi khi cập nhật giỏ hàng:', err);
-              return res.status(500).json({ message: 'Lỗi khi cập nhật giỏ hàng' });
-            }
-            res.status(200).json({ success: true, message: 'Cập nhật số lượng sản phẩm' });
-          });
+        if (results.length > 0) {
+            // Nếu có sp rồi thì cập nhật số lượng
+            const newQuantity = results[0].quantity + quantity;
+            const updateQuery = 'UPDATE cart SET quantity = ? WHERE product_id = ? AND acc_id = ?';
+            db.query(updateQuery, [newQuantity, actualProductId, acc_id], (error) => {
+                if (error) {
+                    return res.status(500).json({ message: 'Lỗi khi cập nhật số lượng', error });
+                }
+                res.status(200).json({ message: 'Cập nhật số lượng thành công' });
+            });
         } else {
-          // Nếu sản phẩm chưa có trong giỏ, thêm sản phẩm vào giỏ
-          const insertQuery = 'INSERT INTO cart_items (acc_id, product_id, quantity) VALUES (?, ?, ?)';
-          db.query(insertQuery, [acc_id, product_id, quantity], (err, insertResults) => {
-            if (err) {
-              console.error('Lỗi khi thêm sản phẩm vào giỏ:', err);
-              return res.status(500).json({ message: 'Lỗi khi thêm sản phẩm vào giỏ' });
-            }
-            res.status(200).json({ success: true, message: 'Sản phẩm đã được thêm vào giỏ hàng' });
-          });
+            // Nếu chưa thì thêm sp vào giỏ hàng
+            const insertQuery = 'INSERT INTO cart (product_id, quantity, acc_id) VALUES (?, ?, ?)';
+            db.query(insertQuery, [actualProductId, quantity, acc_id], (error, results) => {
+                if (error) {
+                    return res.status(500).json({ message: 'Lỗi khi thêm sản phẩm vào giỏ hàng', error });
+                }
+                res.status(201).json({ message: 'Thêm sản phẩm vào giỏ hàng thành công', cart: results });
+            });
         }
-      });
-    }
-  });
+    });
+});
+
+// Cập nhật giỏ hàng
+router.put('/updatecart', (req, res) => {
+    const { product_id, quantity, acc_id } = req.body; 
+    if (!acc_id) return res.status(400).json({ message: 'Cần đăng nhập để cập nhật giỏ hàng' });
+    if (!product_id) return res.status(400).json({ message: 'Cần cung cấp product_id để cập nhật' });
+
+    const query = `
+        UPDATE cart
+        SET quantity = ?
+        WHERE product_id = ? AND acc_id = ?
+    `;
+    
+    db.query(query, [quantity, product_id, acc_id], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: 'Failed to update cart', error });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Product not found in cart' });
+        }
+        res.status(200).json({ message: 'Cart updated successfully' });
+    });
+});
+
+// Xóa sản phẩm khỏi giỏ hàng
+router.delete('/deletecart', (req, res) => {
+    const { product_id, acc_id } = req.body;
+    if (!acc_id) return res.status(400).json({ message: 'Cần đăng nhập để xóa sản phẩm khỏi giỏ hàng' });
+    if (!product_id) return res.status(400).json({ message: 'Cần cung cấp product_id để xóa' });
+
+    const query = `
+        DELETE FROM cart
+        WHERE product_id = ? AND acc_id = ?
+    `;
+
+    db.query(query, [product_id, acc_id], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: 'Failed to remove product', error });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Product not found in cart' });
+        }
+        res.status(200).json({ message: 'Product removed from cart' });
+    });
 });
 
 module.exports = router;

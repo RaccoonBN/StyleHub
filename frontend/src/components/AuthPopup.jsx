@@ -35,9 +35,9 @@ const AuthPopup = ({ isOpen, onClose, onLogout }) => {
       // Đăng nhập
       if (isLoginMode) {
         const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-  
         if (response.status === 200) {
           localStorage.setItem('user', JSON.stringify(response.data.user));
+          localStorage.setItem('acc_id', response.data.acc_id); // Lưu acc_id vào localStorage
           toast.success('Đăng nhập thành công!');
           onClose(); // Đóng modal sau khi đăng nhập thành công
         } else {
