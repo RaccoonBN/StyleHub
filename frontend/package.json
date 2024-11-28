@@ -13,6 +13,7 @@
     "config": "^3.3.12",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "mysql": "^2.18.1",
@@ -30,7 +31,7 @@
   },
   "scripts": {
     "eslint": "eslint . --ext .js,.jsx",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "cross-env NODE_CONFIG_DIR=\\xampp\\htdocs\\StyleHub\\backend\\config concurrently \"npm run server\" \"npm run client\"",
     "server": "node ../backend/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",

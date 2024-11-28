@@ -1,69 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './Checkoutpage.css';  
+import './Checkoutpage.css';
 
 const CheckoutPage = () => {
-    const { state } = useLocation();  // Lấy dữ liệu từ CartPopup (orderDetails)
+    const { state } = useLocation();
     const navigate = useNavigate();
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('COD');
-    const [orderDetails, setOrderDetails] = useState(state?.orderDetails || []);  // Dữ liệu đơn hàng từ CartPopup
+    const [orderDetails, setOrderDetails] = useState(state?.orderDetails || []);
 
     useEffect(() => {
         if (!orderDetails || orderDetails.length === 0) {
-            // Nếu không có dữ liệu đơn hàng, điều hướng về giỏ hàng
             navigate('/cart');
         }
     }, [orderDetails, navigate]);
 
     const calculateTotal = () => {
-        return orderDetails.reduce((total, item) => total + item.cost * item.quantity, 0);
+        // Chuyển đổi dữ liệu đầu vào thành số 
+        return orderDetails.reduce((total, item) => {
+            const cost = parseFloat(item.cost) || 0;
+            const quantity = parseInt(item.quantity) || 0;
+            return total + cost * quantity;
+        }, 0);
     };
 
     const handleSubmitOrder = async (e) => {
         e.preventDefault();
     
-        // Kiểm tra các trường nhập liệu
+        // Kiểm tra thông tin đầu vào
         if (!fullName || !phoneNumber || !email || !address) {
             alert('Vui lòng điền đầy đủ thông tin.');
             return;
         }
+    
+        const totalAmount = calculateTotal();
+        if (isNaN(totalAmount) || totalAmount <= 0) {
+            alert('Tổng tiền không hợp lệ.');
+            return;
+        }
+    
+        console.log("Dữ liệu đơn hàng:", orderDetails);
+        console.log("Tổng tiền:", totalAmount);
+    
         if (paymentMethod === 'VNPAY') {
             try {
+                const requestBody = {
+                    products: orderDetails,
+                    totalAmount,
+                    bankCode: null, 
+                    language: 'vn',
+                    fullName,
+                    phoneNumber,
+                    address,
+                    acc_id: localStorage.getItem('acc_id'),
+                };
+    
                 const response = await fetch('http://localhost:5000/api/vnpay/create_payment_url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody),
+                });
+    
+                const data = await response.json();
+                console.log("Response data:", data); 
+                if (data.paymentUrl) {
+                    window.location.href = data.paymentUrl;
+                } else {
+                    alert('Không thể tạo URL thanh toán.');
+                }
+            } catch (error) {
+                console.error('Error khi thanh toán qua VNPAY:', error);
+                alert('Đã xảy ra lỗi khi kết nối với VNPAY.');
+            }
+        } else {
+            try {
+                const requestBody = {
+                    address,
+                    phone_number: phoneNumber,
+                    total: totalAmount,
+                    pay_status: 'pending',
+                    acc_id: localStorage.getItem('acc_id'),
+                    full_name: fullName,
+                };
+
+                console.log("Gửi dữ liệu đơn hàng:", requestBody);
+
+                const response = await fetch('http://localhost:5000/api/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        products: orderDetails,
-                        totalAmount: calculateTotal,
-                        bankCode: null,
-                        language: "vn",
-                    }),
+                    body: JSON.stringify(requestBody),
                 });
 
                 const data = await response.json();
-    
-                if (data.url) {
-                    window.location.href = data.url;  // Chuyển hướng đến trang thanh toán VNPAY
+                if (response.ok) {
+                    alert('Đặt hàng thành công!');
+                    navigate('/');
                 } else {
-                    alert('Lỗi khi tạo yêu cầu thanh toán VNPAY.');
+                    alert(data.message || 'Lỗi khi tạo đơn hàng');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi thanh toán.');
+                alert('Đã xảy ra lỗi khi gửi yêu cầu đặt hàng.');
             }
-        } else {
-            alert('Đặt hàng thành công. Chúng tôi sẽ giao hàng theo địa chỉ bạn cung cấp.');
-            navigate('/');
         }
     };
     
-
     return (
         <div className="checkout-container">
             <h2 className="checkout-header">Thông tin đơn hàng</h2>
@@ -72,8 +118,8 @@ const CheckoutPage = () => {
                 <ul>
                     {orderDetails.map((item) => (
                         <li key={item.id}>
-                            {item.name} x {item.quantity} - {item.cost.toLocaleString('vi-VN')} VND
-                            <strong> - {(item.cost * item.quantity).toLocaleString('vi-VN')} VND</strong>
+                            {item.name} x {item.quantity} - {parseFloat(item.cost).toLocaleString('vi-VN')} VND
+                            <strong> - {(parseFloat(item.cost) * parseInt(item.quantity)).toLocaleString('vi-VN')} VND</strong>
                         </li>
                     ))}
                 </ul>

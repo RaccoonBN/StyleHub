@@ -3,13 +3,15 @@
  */
 
 
-
+const db = require('../config/db'); 
 let express = require('express');
 let router = express.Router();
 let $ = require('jquery');
 const request = require('request');
 const moment = require('moment');
-
+const crypto = require("crypto");
+const querystring = require('qs');
+const config = require('config');
 
 router.get('/', function(req, res, next){
     res.render('orderlist', { title: 'Danh sách đơn hàng' })
@@ -32,90 +34,119 @@ router.get('/refund', function (req, res, next) {
 });
 
 
-router.post('/create_payment_url', function (req, res, next) {
-    
+router.post('/create_payment_url', (req, res, next) => {
+    const { totalAmount, bankCode, language, fullName, phoneNumber, address, acc_id } = req.body;
+
     process.env.TZ = 'Asia/Ho_Chi_Minh';
-    
-    let date = new Date();
-    let createDate = moment(date).format('YYYYMMDDHHmmss');
-    
-    let ipAddr = req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
 
-    let config = require('config');
-    let tmnCode = config.get('vnp_TmnCode');
-    let secretKey = config.get('vnp_HashSecret');
-    let vnpUrl = config.get('vnp_Url');
-    let returnUrl = config.get('vnp_ReturnUrl');
-    let orderId = moment(date).format('DDHHmmss');
-    let amount = req.body.amount;
-    let bankCode = req.body.bankCode;
-    
-    let locale = req.body.language;
-    if(locale === null || locale === ''){
-        locale = 'vn';
+    try {
+        // Validate input
+        if (!totalAmount || isNaN(totalAmount)) {
+            return res.status(400).json({ message: 'Invalid total amount' });
+        }
+        if (!fullName || !phoneNumber || !address || !acc_id) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const insertQuery = `
+            INSERT INTO \`order\` (address, phone_number, total, pay_status, acc_id) 
+            VALUES (?, ?, ?, 'pending', ?)
+        `;
+        db.query(insertQuery, [address, phoneNumber, totalAmount, acc_id], (err, result) => {
+            if (err) {
+                console.error("Error inserting order:", err);
+                return res.status(500).json({ message: 'Error creating order' });
+            }
+
+            const orderId = result.insertId;
+            console.log("Order ID:", orderId);
+
+            // Thực hiện các bước còn lại để tạo URL thanh toán
+            const tmnCode = config.get('vnp_TmnCode');
+            const secretKey = config.get('vnp_HashSecret');
+            const vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            const returnUrl = "http://localhost:5000/api/vnpay/vnpay_return";
+            const createDate = moment(new Date()).format('YYYYMMDDHHmmss');
+
+            let locale = language || 'vn';
+            let currCode = 'VND';
+            let vnp_Params = {
+                vnp_Version: '2.1.0',
+                vnp_Command: 'pay',
+                vnp_TmnCode: tmnCode,
+                vnp_Locale: locale,
+                vnp_CurrCode: currCode,
+                vnp_TxnRef: orderId,
+                vnp_OrderInfo: `Thanh toan don hang #${orderId}`,
+                vnp_OrderType: 'other',
+                vnp_Amount: totalAmount * 100,
+                vnp_ReturnUrl: returnUrl,
+                vnp_IpAddr: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+                vnp_CreateDate: createDate
+            };
+
+            if (bankCode) {
+                vnp_Params['vnp_BankCode'] = bankCode;
+            }
+            vnp_Params = sortObject(vnp_Params);
+            const signData = querystring.stringify(vnp_Params, { encode: false });
+            const hmac = crypto.createHmac("sha512", secretKey);
+            const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
+            vnp_Params['vnp_SecureHash'] = signed;
+
+            const paymentUrl = vnpUrl + '?' + querystring.stringify(vnp_Params, { encode: false });
+            console.log("Generated Payment URL:", paymentUrl);
+
+            return res.json({ paymentUrl });
+        });
+    } catch (error) {
+        console.error("Error creating payment URL:", error);
+        res.status(500).json({ message: 'Error creating payment URL' });
     }
-    let currCode = 'VND';
-    let vnp_Params = {};
-    vnp_Params['vnp_Version'] = '2.1.0';
-    vnp_Params['vnp_Command'] = 'pay';
-    vnp_Params['vnp_TmnCode'] = tmnCode;
-    vnp_Params['vnp_Locale'] = locale;
-    vnp_Params['vnp_CurrCode'] = currCode;
-    vnp_Params['vnp_TxnRef'] = orderId;
-    vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + orderId;
-    vnp_Params['vnp_OrderType'] = 'other';
-    vnp_Params['vnp_Amount'] = amount * 100;
-    vnp_Params['vnp_ReturnUrl'] = returnUrl;
-    vnp_Params['vnp_IpAddr'] = ipAddr;
-    vnp_Params['vnp_CreateDate'] = createDate;
-    if(bankCode !== null && bankCode !== ''){
-        vnp_Params['vnp_BankCode'] = bankCode;
-    }
-
-    vnp_Params = sortObject(vnp_Params);
-
-    let querystring = require('qs');
-    let signData = querystring.stringify(vnp_Params, { encode: false });
-    let crypto = require("crypto");     
-    let hmac = crypto.createHmac("sha512", secretKey);
-    let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex"); 
-    vnp_Params['vnp_SecureHash'] = signed;
-    vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-
-    res.redirect(vnpUrl)
 });
 
-router.get('/vnpay_return', function (req, res, next) {
+
+
+router.get('/vnpay_return', async function (req, res, next) {
     let vnp_Params = req.query;
-
-    let secureHash = vnp_Params['vnp_SecureHash'];
-
+    const secureHash = vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHashType'];
 
+    const orderId = vnp_Params['vnp_TxnRef'];
+    const rspCode = vnp_Params['vnp_ResponseCode'];
+
     vnp_Params = sortObject(vnp_Params);
 
-    let config = require('config');
-    let tmnCode = config.get('vnp_TmnCode');
-    let secretKey = config.get('vnp_HashSecret');
+    const config = require('config');
+    const secretKey = config.get('vnp_HashSecret');
+    const querystring = require('qs');
+    const signData = querystring.stringify(vnp_Params, { encode: false });
+    const crypto = require("crypto");
+    const hmac = crypto.createHmac("sha512", secretKey);
+    const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
 
-    let querystring = require('qs');
-    let signData = querystring.stringify(vnp_Params, { encode: false });
-    let crypto = require("crypto");     
-    let hmac = crypto.createHmac("sha512", secretKey);
-    let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+    if (secureHash === signed) {
+        try {
+            const updateQuery = `
+                UPDATE orders
+                SET pay_status = ?
+                WHERE id = ?
+            `;
+            // kq trả về 00 thì success còn trả về kq khác thì failed
+            const payStatus = rspCode === "00" ? "success" : "failed";
+            await db.execute(updateQuery, [payStatus, orderId]);
 
-    if(secureHash === signed){
-        //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-
-        res.render('success', {code: vnp_Params['vnp_ResponseCode']})
-    } else{
-        res.render('success', {code: '97'})
+            res.render('success', { code: rspCode });
+        } catch (error) {
+            console.error("Error updating payment status:", error);
+            res.render('success', { code: '99' }); // Lỗi cập nhật
+        }
+    } else {
+        res.render('success', { code: '97' }); // Checksum không hợp lệ
     }
 });
+
 
 router.get('/vnpay_ipn', function (req, res, next) {
     let vnp_Params = req.query;
@@ -134,7 +165,7 @@ router.get('/vnpay_ipn', function (req, res, next) {
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let crypto = require("crypto");     
     let hmac = crypto.createHmac("sha512", secretKey);
-    let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+    let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
     
     let paymentStatus = '0'; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
     //let paymentStatus = '1'; // Giả sử '1' là trạng thái thành công bạn cập nhật sau IPN được gọi và trả kết quả về nó

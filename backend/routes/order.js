@@ -4,30 +4,34 @@ const db = require('../config/db');  // Giả sử bạn có một file config/d
 
 // 1. Route để tạo đơn hàng mới
 router.post('/create', (req, res) => {
-    const { address, phone_number, total, pay_status, acc_id, full_name } = req.body;
+    const { address, phone_number, total, acc_id } = req.body;
     const query = `
-        INSERT INTO order (address, phone_number, total, pay_status, acc_id, full_name) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO \`order\` (address, phone_number, total, pay_status, acc_id) 
+        VALUES (?, ?, ?,'pending', ?)
     `;
     
-    db.query(query, [address, phone_number, total, pay_status, acc_id, full_name], (err, result) => {
+    db.query(query, [address, phone_number, total, acc_id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Lỗi khi tạo đơn hàng' });
         }
-        return res.status(201).json({ message: 'Đơn hàng đã được tạo thành công', orderId: result.insertId });
+        return res.status(201).json({ message: 'Đơn hàng đã được tạo thành công', orderId: result.insertId});
     });
 });
 
 // 2. Route để lấy tất cả đơn hàng của người dùng
-router.get('/:acc_id', (req, res) => {
-    const { acc_id } = req.params;
-    const query = `SELECT * FROM orders WHERE acc_id = ?`;
-    
+router.get('/orders', (req, res) => {
+    const { acc_id } = req.body;
+    const query = `
+    SELECT order.*, account.full_name 
+    FROM \`order\` o 
+    JOIN account a ON order.acc_id = account.acc_id
+    WHERE order.acc_id = ?
+    `;
     db.query(query, [acc_id], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ message: 'Lỗi khi lấy đơn hàng' });
+            return res.status(500).json({ message: 'Lỗi khi lấy danh sách đơn hàng' });
         }
         return res.status(200).json(result);
     });
