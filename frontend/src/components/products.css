@@ -1,4 +1,5 @@
 .products-grid {
+    margin-top: 50px;
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Mỗi dòng chứa 4 sản phẩm */
     gap: 20px; /* Khoảng cách giữa các sản phẩm */
@@ -84,8 +85,8 @@
     top: 0;
     left: 0;
     right: 0;
-    margin-top: 30px;
     bottom: 0;
+    margin-top: 30px;
     background-color: rgba(0, 0, 0, 0.5); /* Nền tối */
     display: flex;
     justify-content: center;
@@ -98,23 +99,27 @@
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    max-width: 400px;
-    width: 90%; /* Chiều rộng tối đa */
+    max-width: 90%; /* Giới hạn chiều rộng tối đa */
+    max-height: 80%; /* Giới hạn chiều cao tối đa để vừa màn hình */
+    width: 400px; /* Đặt chiều rộng cụ thể */
+    overflow-y: auto; /* Thêm cuộn nếu nội dung vượt quá chiều cao */
     position: relative; 
 }
-    .close {
+
+.close {
     position: absolute;
-    top: 30px; /* Khoảng cách từ trên */
-    right: 30px; /* Khoảng cách từ bên phải */
+    top: 10px; /* Giảm khoảng cách từ trên */
+    right: 10px; /* Giảm khoảng cách từ bên phải */
     border: none;
     font-size: 24px;
     color: #333;
     cursor: pointer;
-  }
-  
-  .close:hover {
+}
+
+.close:hover {
     color: #f44336; /* Màu đỏ khi hover */
-  }
+}
+
 .popup-content img {
     width: 100%; /* Hình ảnh chiếm toàn bộ chiều rộng */
     height: auto; /* Giữ tỷ lệ hình ảnh */
@@ -123,20 +128,7 @@
 .popup-buttons {
     margin-top: 15px;
 }
-.popup-buttons close {
-    position: absolute;
-    top: 10px; /* Khoảng cách từ trên */
-    right: 10px; /* Khoảng cách từ bên phải */
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #333;
-    cursor: pointer;
-  }
-  
-  .popup-buttons close:hover {
-    color: #f44336; /* Màu đỏ khi hover */
-  }
+
 .popup-buttons button {
     margin: 5px;
     padding: 10px 15px;
