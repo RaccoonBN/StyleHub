@@ -1,0 +1,34 @@
+.order-history-container {
+    padding: 20px;
+  }
+  
+  .order-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-item {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+  }
+  
+  .order-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .order-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .order-details img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .order-details p {
+    margin: 5px 0;
+  }
+  

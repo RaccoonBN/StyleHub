@@ -277,3 +277,33 @@ body, html {
   background-color: #444;
   color: white;
 }
+/* Thêm vào class cho menu item "Lịch sử đặt hàng" */
+.menu-item-history {
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 10px 20px; /* Tăng khoảng cách để đẹp hơn */
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px; /* Bo góc menu items */
+  font-size: 16px; /* Cùng một kích thước chữ cho tất cả mục menu */
+}
+
+/* Đảm bảo tất cả các mục menu có kích thước chữ giống nhau */
+.menu-item-history .menu-icon {
+  margin-right: 10px;
+  font-size: 20px; /* Kích thước biểu tượng */
+}
+
+/* Hiệu ứng hover cho các menu items */
+.menu-item-history:hover {
+  background-color: #444; /* Màu nền khi hover */
+  color: white; /* Màu chữ không thay đổi */
+}
+
+/* Lịch sử đặt hàng có cùng kiểu dáng với đăng xuất */
+.menu-item-history .menu-icon {
+  margin-right: 10px; /* Khoảng cách giữa biểu tượng và chữ */
+  font-size: 20px; /* Kích thước biểu tượng */
+}

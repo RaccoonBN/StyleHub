@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './navbar.css';
 import AuthPopup from './AuthPopup';
 import CartPopup from './CartPopup';
-import { FaShoppingCart, FaUserCircle, FaSearch, FaBars, FaSignOutAlt,FaHistory } from 'react-icons/fa'; 
+import { FaShoppingCart, FaUserCircle, FaSearch, FaBars, FaSignOutAlt, FaHistory } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 
 const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
@@ -95,7 +95,6 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
     setUser(null); // Reset state người dùng về null
   };
 
-
   return (
     <header className="header">
       <nav className="navbar">
@@ -162,10 +161,10 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
             {menuOpen && (
               <ul className="menu-dropdown">
                 <li>
-                  <Link to="/order-history" className="menu-item">
-                  <FaHistory className="menu-icon" /> {/* Biểu tượng lịch sử */}
+                  <Link to="/order-history" className="menu-item-history">
+                    <FaHistory className="menu-icon" /> {/* Biểu tượng lịch sử */}
                     Lịch sử đặt hàng
-                  </Link>
+                 </Link>
                 </li>
                 <li>
                 <button onClick={handleLogout} className="menu-item logout-btn">

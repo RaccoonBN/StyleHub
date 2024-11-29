@@ -10,6 +10,7 @@ import CheckoutPage from './components/CheckoutPage';
 import AdminDashboard from './components/admin/AdminDashboard';
 import ManageUsers from './components/admin/ManageUsers';
 import ManageProducts from './components/admin/ManageProducts';
+import OrderHistory from './components/OrderHistory';  // Import component OrderHistory
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -31,56 +32,19 @@ function App() {
     fetchProducts();
   }, []);
 
-  const addToCart = async (productId, quantity = 1) => {
-    try {
-      const acc_id = localStorage.getItem('acc_id'); // Lấy acc_id từ localStorage 
-      console.log('acc_id:', acc_id); // Log acc_id để kiểm tra
-      if (!acc_id) { 
-        console.error('User not logged in'); 
-        return; 
-      }
-      console.log('Sending request to add product to cart with product_id:', productId, 'quantity:', quantity, 'acc_id:', acc_id);
-      const response = await fetch('http://localhost:5000/api/addcart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                product_id: productId,  
-                quantity,
-                acc_id: acc_id, // Thêm acc_id vào body của yêu cầu
-            }),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Response from server:', data);
-            // Nếu muốn cập nhật lại giỏ hàng trong state
-            setCartItems(prevItems => {
-                const existingProduct = prevItems.find(item => item.product_id === productId);
-
-                if (existingProduct) {
-                    // Cập nhật số lượng nếu sản phẩm đã có
-                    return prevItems.map(item => 
-                        item.product_id === productId 
-                            ? { ...item, quantity: existingProduct.quantity + quantity } 
-                            : item
-                    );
-                } else {
-                    // Thêm sản phẩm mới nếu chưa có
-                    return [...prevItems, { product_id: productId, quantity }];
-                }
-            });
-        } else {
-            console.error('Failed to add/update product in cart');
-            const errorData = await response.json(); 
-            console.error('Error response from server:', errorData);
-        }
-    } catch (error) {
-        console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+  const addToCart = (product) => {
+    const existingProduct = cartItems.find((item) => item.product_id === product.product_id);
+    
+    if (existingProduct) {
+      setCartItems(cartItems.map((item) => 
+        item.product_id === product.product_id 
+          ? { ...item, quantity: item.quantity + 1 } 
+          : item
+      ));
+    } else {
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
     }
-};
-
+  };
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -96,7 +60,6 @@ function App() {
         <Navbar 
           cartItems={cartItems} 
           setCartItems={setCartItems} 
-          addToCart={addToCart}
           allProducts={allProducts} 
           setFilteredProducts={setFilteredProducts} 
           onOpenPopup={handleOpenPopup} // Thêm props để mở Popup
@@ -106,6 +69,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-history" element={<OrderHistory />} />  {/* Thêm route cho lịch sử đơn hàng */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<ManageUsers />} />
           <Route path="/admin/products" element={<ManageProducts />} />
