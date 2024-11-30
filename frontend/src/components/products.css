@@ -1,3 +1,6 @@
+/* Product.css */
+
+/* Các kiểu dáng cho grid sản phẩm */
 .products-grid {
     margin-top: 50px;
     display: grid;
@@ -48,111 +51,29 @@
     font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
     font-size: 16px;
 }
-/* CSS cho phân trang */
 .pagination {
     display: flex;
     justify-content: center;
-    margin: 20px 0; /* Khoảng cách trên và dưới */
-}
-
-.pagination button {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 5px; /* Kích thước nhỏ cho nút */
-    margin: 0 2px; /* Khoảng cách giữa các nút */
-    cursor: pointer;
-    color:#000000;
-    transition: background-color 0.2s;
-    font-size: 12px; /* Kích thước font nhỏ hơn */
-    width: 30px; /* Chiều rộng cố định cho nút */
-    height: 30px; /* Chiều cao cố định cho nút */
-}
-
-
-.pagination button:hover {
-    background-color: #f0f0f0; /* Màu nền khi hover */
-}
-
-.pagination button.active {
-    background-color: black; /* Màu nền cho nút đang hoạt động */
-    color: white; /* Màu chữ cho nút đang hoạt động */
-    border: none; /* Không viền cho nút đang hoạt động */
-}
-/* CSS cho popup */
-.popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin-top: 30px;
-    background-color: rgba(0, 0, 0, 0.5); /* Nền tối */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Đảm bảo popup nằm trên các thành phần khác */
-}
-
-.popup-content {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    max-width: 90%; /* Giới hạn chiều rộng tối đa */
-    max-height: 80%; /* Giới hạn chiều cao tối đa để vừa màn hình */
-    width: 400px; /* Đặt chiều rộng cụ thể */
-    overflow-y: auto; /* Thêm cuộn nếu nội dung vượt quá chiều cao */
-    position: relative; 
-}
-
-.close {
-    position: absolute;
-    top: 10px; /* Giảm khoảng cách từ trên */
-    right: 10px; /* Giảm khoảng cách từ bên phải */
-    border: none;
-    font-size: 24px;
-    color: #333;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #f44336; /* Màu đỏ khi hover */
-}
-
-.popup-content img {
-    width: 100%; /* Hình ảnh chiếm toàn bộ chiều rộng */
-    height: auto; /* Giữ tỷ lệ hình ảnh */
-}
-
-.popup-buttons {
-    margin-top: 15px;
-}
-
-.popup-buttons button {
-    margin: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .pagination button {
     padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  
+  .pagination button.active {
     background-color: #000000;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.popup-buttons button:hover {
-    background-color: #2e343b; /* Thay đổi màu khi hover */
-}
-
-/* Chọn kích thước */
-label {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-}
+  }
+  
+  .pagination button:disabled {
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+  }
+  

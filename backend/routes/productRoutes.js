@@ -90,4 +90,22 @@ router.get('/products/brand/:brandName', async (req, res) => {
     }
 });
 
+// Lấy tất cả sản phẩm theo danh mục
+router.get('/products/:categoryId', (req, res) => {
+    const cateId = req.params.categoryId; // Lấy ID danh mục từ URL
+
+    // Truy vấn sản phẩm theo danh mục
+    const query = 'SELECT * FROM products WHERE cate_id = ?';
+    
+    db.query(query, [cateId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Không có sản phẩm nào trong danh mục này' });
+        }
+        res.json(results); // Trả về danh sách sản phẩm
+    });
+});
+
 module.exports = router;

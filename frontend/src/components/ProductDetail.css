@@ -1,0 +1,287 @@
+/* Tổng thể cho popup */
+.product-detail-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7); /* Nền tối mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    width: 80%;
+    max-width: 1300px;
+    height: auto;
+    max-height: 70vh;
+    padding: 20px;
+    border-radius: 15px;
+    overflow: auto;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out;
+    background-color: #fff; /* Nền trắng cho popup */
+  }
+  
+  /* Hiệu ứng fade-in khi popup xuất hiện */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Cấu trúc bố cục chính */
+  .product-detail-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 250px;
+
+  }
+  
+  .product-detail-image {
+    flex: 1;
+    max-width: 350px;
+    margin-top: 400px;
+  }
+  
+  .product-detail-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Cột 2: Thông tin sản phẩm */
+  .product-detail-info {
+    flex: 2;
+    padding-left: 20px;
+    color: #333;
+    margin-top: 350px;
+
+  }
+  
+  .product-detail-info h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
+  
+  .product-detail-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  
+  /* Đánh giá người dùng */
+  .product-detail-rating {
+    margin-top: 30px;
+  }
+  
+  .product-detail-rating h4 {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .product-detail-rating-stars {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .product-detail-star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s ease;
+  }
+  
+  .product-detail-star:hover {
+    color: #f39c12;
+  }
+  
+  .product-detail-star-filled {
+    color: #f39c12;
+  }
+  
+  .product-detail-rating textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  .product-detail-popup-buttons button {
+    padding: 12px 30px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .product-detail-popup-buttons button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  
+  /* Đóng popup */
+  .product-detail-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 30px;
+    color: #333;
+  }
+  
+  /* Sản phẩm liên quan */
+  .product-detail-related-products {
+    margin-top: 30px;
+    width: 100%;
+  }
+  
+  .product-detail-related-products-list {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .product-detail-related-product {
+    width: 160px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .product-detail-related-product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-detail-related-product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .product-detail-related-product p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  /* Phần hiển thị đánh giá */
+.product-detail-rating textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .product-detail-rating-stars {
+    margin-bottom: 10px;
+  }
+  
+  .review-item {
+    margin-top: 20px;
+  }
+  
+  .review-item p {
+    margin: 5px 0;
+  }
+  
+  .reviews-list {
+    margin-top: 20px;
+  }
+  
+  .review-rating {
+    display: flex;
+    gap: 5px;
+  }
+  /* Các lớp CSS cho phần đánh giá */
+.product-detail-rating {
+    margin-top: 20px;
+  }
+  
+  .product-detail-rating-stars {
+    margin-bottom: 10px;
+  }
+  
+  .product-detail-star {
+    color: #ddd;
+    cursor: pointer;
+  }
+  
+  .product-detail-star-filled {
+    color: #ffd700; /* Màu vàng cho sao đầy */
+  }
+  
+  textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .reviews-list {
+    margin-top: 20px;
+  }
+  
+  .review-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+  }
+  
+  .review-rating {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .review-comment {
+    margin: 10px 0;
+  }
+  
+  .review-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .review-username {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .review-date {
+    color: #888;
+  }
+  
