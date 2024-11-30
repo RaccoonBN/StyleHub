@@ -156,7 +156,7 @@ const ProductDetail = ({
             value={review} 
             onChange={(e) => setReview(e.target.value)} 
         />
-        <button onClick={handleReviewSubmit}>Gửi đánh giá</button>
+        <button className="product-detail-review-button" onClick={handleReviewSubmit}>Gửi đánh giá</button>
 
        {/* Hiển thị các đánh giá của người dùng */}
         <div className="reviews-list">

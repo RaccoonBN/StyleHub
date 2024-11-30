@@ -118,7 +118,7 @@
   
   .product-detail-popup-buttons button {
     padding: 12px 30px;
-    background-color: #28a745;
+    background-color: #000000;
     border: none;
     color: white;
     font-size: 18px;
@@ -128,7 +128,7 @@
   }
   
   .product-detail-popup-buttons button:hover {
-    background-color: #218838;
+    background-color: #040505;
     transform: translateY(-2px);
   }
   
@@ -235,20 +235,20 @@
     border-radius: 5px;
   }
   
-  button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+
+  .product-detail-review-button {
+    background-color: #000000;
     color: white;
+    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
   }
   
-  button:hover {
-    background-color: #45a049;
+  .product-detail-review-button:hover {
+    background-color: #3c3f3d;
   }
-  
   .reviews-list {
     margin-top: 20px;
   }
