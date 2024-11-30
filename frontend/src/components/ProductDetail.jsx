@@ -19,7 +19,16 @@ const ProductDetail = ({
   const [reviews, setReviews] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const popupRef = useRef(null);
-
+  const scrollProducts = (direction) => {
+    const container = document.querySelector('.product-detail-related-products-list');
+    const scrollAmount = direction === 'left' ? -200 : 200; // Di chuyển 200px mỗi lần
+  
+    container.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+  
  // Lấy danh sách đánh giá khi sản phẩm được chọn
  useEffect(() => {
     if (selectedProduct && selectedProduct.product_id) {
@@ -112,32 +121,40 @@ const ProductDetail = ({
             </div>
           </div>
         </div>
-
-        {/* Sản phẩm liên quan */}
-        <div className="product-detail-related-products">
-          <h4>Sản phẩm cùng danh mục:</h4>
-          <div className="product-detail-related-products-list">
-            {relatedProducts.length > 0 ? (
-              relatedProducts.map((product) => (
-                <div 
-                  key={product.product_id} 
-                  className="product-detail-related-product"
-                  onClick={() => onProductClick(product)}  // Thêm sự kiện nhấp vào sản phẩm
-                >
-                  <img 
-                    src={images(`./${product.imageUrl}`)} 
-                    alt={product.product_name} 
-                    className="product-detail-related-product-image" 
-                  />
-                  <p>{product.product_name}</p>
-                  <p>{product.cost.toLocaleString('vi-VN')} VND</p>
-                </div>
-              ))
-            ) : (
-              <p>Không có sản phẩm liên quan.</p>
-            )}
-          </div>
+{/* Sản phẩm liên quan */}
+<div className="product-detail-related-products">
+  <h4>Sản phẩm cùng danh mục:</h4>
+  <div className="product-detail-related-products-container">
+    <button className="slider-button left" onClick={() => scrollProducts('left')}>
+      &#8592; {/* Mũi tên trái */}
+    </button>
+        <div className="product-detail-related-products-list">
+        {relatedProducts.length > 0 ? (
+            relatedProducts.map((product) => (
+            <div 
+                key={product.product_id} 
+                className="product-detail-related-product"
+                onClick={() => onProductClick(product)}  // Thêm sự kiện nhấp vào sản phẩm
+            >
+                <img 
+                src={images(`./${product.imageUrl}`)} 
+                alt={product.product_name} 
+                className="product-detail-related-product-image" 
+                />
+                <p>{product.product_name}</p>
+                <p>{product.cost.toLocaleString('vi-VN')} VND</p>
+            </div>
+            ))
+        ) : (
+            <p>Không có sản phẩm liên quan.</p>
+        )}
         </div>
+        <button className="slider-button right" onClick={() => scrollProducts('right')}>
+        &#8594; {/* Mũi tên phải */}
+        </button>
+    </div>
+    </div>
+
 
         <div className="product-detail-rating">
         <h4>Đánh giá sản phẩm:</h4>
