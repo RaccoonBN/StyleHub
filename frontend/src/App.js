@@ -7,9 +7,6 @@ import Navbar from './components/Navbar';
 import Products from './components/Products';
 import AuthPopup from './components/AuthPopup'; 
 import CheckoutPage from './components/CheckoutPage'; 
-import AdminDashboard from './components/admin/AdminDashboard';
-import ManageUsers from './components/admin/ManageUsers';
-import ManageProducts from './components/admin/ManageProducts';
 import OrderHistory from './components/OrderHistory';  // Import component OrderHistory
 
 function App() {
@@ -70,9 +67,6 @@ function App() {
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-history" element={<OrderHistory />} />  {/* Thêm route cho lịch sử đơn hàng */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/users" element={<ManageUsers />} />
-          <Route path="/admin/products" element={<ManageProducts />} />
         </Routes>
         <Footer />
         <AuthPopup isOpen={isPopupOpen} onClose={handleClosePopup} /> {/* Thêm AuthPopup */}
