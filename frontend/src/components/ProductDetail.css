@@ -66,6 +66,8 @@
   .product-detail-info h3 {
     font-size: 28px;
     font-weight: 600;
+    max-width: 450px;
+
     margin-bottom: 15px;
     color: #2c3e50;
   }
