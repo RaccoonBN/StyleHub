@@ -45,6 +45,19 @@ const CheckoutPage = () => {
         console.log("Dữ liệu đơn hàng:", orderDetails);
         console.log("Tổng tiền:", totalAmount);
     
+        const orderItems = orderDetails.map(item => {
+            // Kiểm tra xem có giá hợp lệ cho sản phẩm này không
+            const itemPrice = (parseFloat(item.cost) || 0);
+            const itemTotalPrice = itemPrice * (parseInt(item.quantity) || 0);  // Tính giá của sản phẩm trong đơn hàng
+    
+            return {
+                product_id: item.id,           // Giả sử backend yêu cầu `product_id`
+                quantity_items: item.quantity,  // Số lượng sản phẩm
+                price: itemTotalPrice           // Tính giá tổng của sản phẩm = quantity * cost
+            };
+        });
+    
+        // Kiểm tra phương thức thanh toán
         if (paymentMethod === 'VNPAY') {
             try {
                 const requestBody = {
@@ -77,6 +90,7 @@ const CheckoutPage = () => {
             }
         } else {
             try {
+                // Gửi dữ liệu đơn hàng qua phương thức COD
                 const requestBody = {
                     address,
                     phone_number: phoneNumber,
@@ -84,10 +98,11 @@ const CheckoutPage = () => {
                     pay_status: 'pending',
                     acc_id: localStorage.getItem('acc_id'),
                     full_name: fullName,
+                    orderItems,  
                 };
-
+    
                 console.log("Gửi dữ liệu đơn hàng:", requestBody);
-
+    
                 const response = await fetch('http://localhost:5000/api/create', {
                     method: 'POST',
                     headers: {
@@ -95,7 +110,7 @@ const CheckoutPage = () => {
                     },
                     body: JSON.stringify(requestBody),
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     alert('Đặt hàng thành công!');
@@ -109,6 +124,7 @@ const CheckoutPage = () => {
             }
         }
     };
+    
     
     return (
         <div className="checkout-container">

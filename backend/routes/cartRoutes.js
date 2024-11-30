@@ -27,34 +27,34 @@ router.get('/cart', (req, res) => {
 // Thêm sản phẩm vào giỏ hàng
 router.post('/addcart', (req, res) => {
     const { product_id, quantity, acc_id } = req.body;
-    // Lấy giá trị thực của product_id
-    const actualProductId = product_id?.product_id;
 
-    if (!actualProductId || !acc_id || quantity <= 0) {
+    // Kiểm tra nếu product_id, acc_id và quantity hợp lệ
+    if (!product_id || !acc_id || quantity <= 0) {
         return res.status(400).json({ message: 'Dữ liệu không hợp lệ' });
     }
 
     const checkQuery = 'SELECT * FROM cart WHERE product_id = ? AND acc_id = ?';
+    console.log('SQL Query:', checkQuery, 'Params:', [product_id, acc_id]); // In câu truy vấn và tham số ra console
 
-    db.query(checkQuery, [actualProductId, acc_id], (err, results) => {
+    db.query(checkQuery, [product_id, acc_id], (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Lỗi khi kiểm tra giỏ hàng', error: err });
         }
 
         if (results.length > 0) {
-            // Nếu có sp rồi thì cập nhật số lượng
+            // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng
             const newQuantity = results[0].quantity + quantity;
             const updateQuery = 'UPDATE cart SET quantity = ? WHERE product_id = ? AND acc_id = ?';
-            db.query(updateQuery, [newQuantity, actualProductId, acc_id], (error) => {
+            db.query(updateQuery, [newQuantity, product_id, acc_id], (error) => {
                 if (error) {
                     return res.status(500).json({ message: 'Lỗi khi cập nhật số lượng', error });
                 }
                 res.status(200).json({ message: 'Cập nhật số lượng thành công' });
             });
         } else {
-            // Nếu chưa thì thêm sp vào giỏ hàng
+            // Nếu chưa có sản phẩm trong giỏ hàng, thêm mới
             const insertQuery = 'INSERT INTO cart (product_id, quantity, acc_id) VALUES (?, ?, ?)';
-            db.query(insertQuery, [actualProductId, quantity, acc_id], (error, results) => {
+            db.query(insertQuery, [product_id, quantity, acc_id], (error, results) => {
                 if (error) {
                     return res.status(500).json({ message: 'Lỗi khi thêm sản phẩm vào giỏ hàng', error });
                 }
@@ -64,26 +64,49 @@ router.post('/addcart', (req, res) => {
     });
 });
 
+
 // Cập nhật giỏ hàng
 router.put('/updatecart', (req, res) => {
-    const { product_id, quantity, acc_id } = req.body; 
-    if (!acc_id) return res.status(400).json({ message: 'Cần đăng nhập để cập nhật giỏ hàng' });
-    if (!product_id) return res.status(400).json({ message: 'Cần cung cấp product_id để cập nhật' });
+    const { product_id, quantity, acc_id } = req.body;
 
-    const query = `
-        UPDATE cart
-        SET quantity = ?
-        WHERE product_id = ? AND acc_id = ?
-    `;
-    
-    db.query(query, [quantity, product_id, acc_id], (error, results) => {
-        if (error) {
-            return res.status(500).json({ message: 'Failed to update cart', error });
+    if (!acc_id || !product_id || quantity <= 0) {
+        return res.status(400).json({ message: 'Dữ liệu không hợp lệ' });
+    }
+
+    // Lấy số lượng sản phẩm có sẵn từ bảng products (tồn kho)
+    const stockQuery = 'SELECT quantity FROM products WHERE product_id = ?';
+    db.query(stockQuery, [product_id], (err, stockResults) => {
+        if (err) {
+            return res.status(500).json({ message: 'Lỗi khi kiểm tra số lượng', error: err });
         }
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ message: 'Product not found in cart' });
+
+        if (stockResults.length === 0) {
+            return res.status(404).json({ message: 'Sản phẩm không tồn tại' });
         }
-        res.status(200).json({ message: 'Cart updated successfully' });
+
+        const availableQuantity = stockResults[0].quantity; // Số lượng có sẵn trong kho
+
+        // Kiểm tra xem số lượng người dùng yêu cầu có vượt quá số lượng tồn kho không
+        if (quantity > availableQuantity) {
+            return res.status(400).json({ message: 'Số lượng yêu cầu vượt quá số lượng tồn kho' });
+        }
+
+        // Tiếp theo, kiểm tra và cập nhật số lượng trong giỏ hàng
+        const query = `
+            UPDATE cart
+            SET quantity = ?
+            WHERE product_id = ? AND acc_id = ?
+        `;
+
+        db.query(query, [quantity, product_id, acc_id], (error, results) => {
+            if (error) {
+                return res.status(500).json({ message: 'Failed to update cart', error });
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ message: 'Product not found in cart' });
+            }
+            res.status(200).json({ message: 'Cart updated successfully' });
+        });
     });
 });
 
