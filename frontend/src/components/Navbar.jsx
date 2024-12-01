@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import './navbar.css';
 import AuthPopup from './AuthPopup';
 import CartPopup from './CartPopup';
-import { FaShoppingCart, FaUserCircle, FaSearch, FaBars, FaSignOutAlt, FaHistory } from 'react-icons/fa'; 
+import { FaShoppingCart, FaUserCircle, FaSearch, FaBars, FaSignOutAlt, FaHistory } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 
 const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
@@ -18,13 +18,11 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
 
   // Fetch danh mục và thương hiệu từ API backend
   useEffect(() => {
-    // Kiểm tra người dùng đã đăng nhập chưa khi component được mount
     const loggedUser = JSON.parse(localStorage.getItem('user')); 
     if (loggedUser) {
       setUser(loggedUser); // Nếu có, set thông tin người dùng vào state
     }
 
-    // Lấy danh mục và thương hiệu từ API backend
     const fetchCategoriesAndBrands = async () => {
       try {
         const categoryResponse = await fetch('http://localhost:5000/api/category');
@@ -54,20 +52,20 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
 
   const openLoginPopup = () => {
     if (!user) {
-      setIsLoginPopupOpen(true); // Mở popup đăng nhập chỉ khi người dùng chưa đăng nhập
+      setIsLoginPopupOpen(true);
     }
   };
 
   const closeLoginPopup = () => {
     setIsLoginPopupOpen(false);
   };
-  const [menuOpen, setMenuOpen] = useState(false); // Quản lý trạng thái menu
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Xử lý click bên ngoài menu để đóng
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.menu-container')) {
-        setMenuOpen(false); // Đóng menu nếu click bên ngoài
+        setMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -91,8 +89,8 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('user'); // Xóa thông tin người dùng khỏi sessionStorage khi logout
-    setUser(null); // Reset state người dùng về null
+    sessionStorage.removeItem('user');
+    setUser(null);
   };
 
   return (
@@ -119,7 +117,7 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
               <ul className="dropdown-menu">
                 {categories.map(category => (
                   <li key={category.cate_name}>
-                    <Link to={`/products/${category.cate_name}`}>{category.cate_name}</Link>
+                    <Link to={`/category/${category.cate_name}`}>{category.cate_name}</Link>
                   </li>
                 ))}
               </ul>
@@ -129,14 +127,15 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
             <Link to="#" onClick={toggleBrandDropdown}>THƯƠNG HIỆU</Link>
             {brandDropdownOpen && (
               <ul className="dropdown-menu">
-                {brands.map(brand => (
+                {brands.map((brand) => (
                   <li key={brand.brand_name}>
-                    <Link to={`/brands/${brand.brand_name}`}>{brand.brand_name}</Link>
+                    <Link to={`/brand-product/${brand.brand_name}`}>{brand.brand_name}</Link>
                   </li>
                 ))}
               </ul>
             )}
           </li>
+
           <li><Link to="/about">VỀ CHÚNG TÔI</Link></li>
         </ul>
         <div className="user-actions">
@@ -149,33 +148,32 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
             )}
           </div>
           {user ? (
-        <div className="user-info">
-          <span className="welcome-text">Xin chào, {user.last_name}!</span>
-          <div className="menu-container">
-            <button
-              className="menu-toggle"
-              onClick={() => setMenuOpen((prev) => !prev)} // Chuyển trạng thái menu
-            >
-              <FaBars className="menu-icon" />
-            </button>
-            {menuOpen && (
-              <ul className="menu-dropdown">
-                <li>
-                  <Link to="/order-history" className="menu-item-history">
-                    <FaHistory className="menu-icon" /> {/* Biểu tượng lịch sử */}
-                    Lịch sử đặt hàng
-                 </Link>
-                </li>
-                <li>
-                <button onClick={handleLogout} className="menu-item logout-btn">
-                  <FaSignOutAlt className="menu-icon" />
-                  Đăng xuất
+            <div className="user-info">
+              <span className="welcome-text">Xin chào, {user.last_name}!</span>
+              <div className="menu-container">
+                <button
+                  className="menu-toggle"
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                >
+                  <FaBars className="menu-icon" />
                 </button>
-                </li>
-              </ul>
-            )}
-          </div>
-        </div>
+                {menuOpen && (
+                  <ul className="menu-dropdown">
+                    <li>
+                      <Link to="/order-history" className="menu-item-history">
+                        <FaHistory className="menu-icon" /> Lịch sử đặt hàng
+                      </Link>
+                    </li>
+                    <li>
+                      <button onClick={handleLogout} className="menu-item logout-btn">
+                        <FaSignOutAlt className="menu-icon" />
+                        Đăng xuất
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            </div>
           ) : (
             <Link to="#" onClick={openLoginPopup} className="login-link">
               <FaUserCircle className="icon" /> ĐĂNG NHẬP

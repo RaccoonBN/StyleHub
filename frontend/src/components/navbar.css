@@ -307,3 +307,171 @@ body, html {
   margin-right: 10px; /* Khoảng cách giữa biểu tượng và chữ */
   font-size: 20px; /* Kích thước biểu tượng */
 }
+/* Product Category and Brand Pages Styling */
+
+/* General container for product list */
+.product-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Individual product card */
+.product-card {
+  width: 23%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.product-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px;
+  color: #333;
+}
+
+.product-card p {
+  font-size: 14px;
+  color: #777;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+/* Category title */
+.category-title, .brand-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+}
+
+/* Style for product price */
+.product-price {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: bold;
+  padding: 0 15px 15px;
+}
+
+/* Buttons or actions (like add to cart) inside product cards */
+.product-card button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.product-card button:hover {
+  background-color: #e74c3c;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .product-list-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-card {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+}
+
+/* Styling for category and brand filters (sidebar or dropdown style) */
+.filter-container {
+  width: 250px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.filter-container h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.filter-item {
+  margin-bottom: 10px;
+}
+
+.filter-item label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter-item select,
+.filter-item input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.filter-item input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+/* Dropdown styling for filter categories */
+.filter-dropdown {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.filter-dropdown ul {
+  list-style: none;
+  padding: 0;
+}
+
+.filter-dropdown li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.filter-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.filter-dropdown li:hover {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+/* Category and Brand List on the Navbar */
+.navbar .dropdown-menu li a {
+  font-size: 16px;
+  color: #333;
+}
+
+.navbar .dropdown-menu li a:hover {
+  background-color: #eee;
+}
