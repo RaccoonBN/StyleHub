@@ -1,34 +1,42 @@
-.order-history-container {
-    padding: 20px;
-  }
-  
-  .order-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .order-item {
-    border-bottom: 1px solid #ccc;
-    padding: 15px 0;
-  }
-  
-  .order-header {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .order-details {
-    display: flex;
-    align-items: center;
-  }
-  
-  .order-details img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-  }
-  
-  .order-details p {
-    margin: 5px 0;
-  }
-  
+.order-history {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.order-item h3 {
+  margin: 0 0 10px 0;
+}
+
+.order-item p {
+  margin: 5px 0;
+}
+
+.order-items {
+  margin-top: 10px;
+}
+
+.order-item-details {
+  margin-bottom: 10px;
+}
+
+.order-item-details p {
+  margin: 5px 0;
+}

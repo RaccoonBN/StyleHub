@@ -7,11 +7,8 @@ import Navbar from './components/Navbar';
 import Products from './components/Products';
 import AuthPopup from './components/AuthPopup';
 import CheckoutPage from './components/CheckoutPage';
-import AdminDashboard from './components/admin/AdminDashboard';
-import ManageUsers from './components/admin/ManageUsers';
-import ManageProducts from './components/admin/ManageProducts';
 import OrderHistory from './components/OrderHistory';
-import BrandProducts from './components/BrandProducts'; // Đảm bảo đã nhập khẩu đúng
+import BrandProducts from './components/BrandProducts'; 
 
 function App() {
   const [cartItems, setCartItems] = useState([]); // Quản lý giỏ hàng
@@ -26,6 +23,7 @@ function App() {
         const response = await fetch('http://localhost:5000/api/products');
         const data = await response.json();
         setAllProducts(data);
+        setFilteredProducts(data); // Hiển thị tất cả sản phẩm ban đầu
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }
@@ -33,6 +31,20 @@ function App() {
 
     fetchProducts();
   }, []);
+
+  // Lưu giỏ hàng vào localStorage khi giỏ hàng thay đổi
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      setCartItems(JSON.parse(storedCartItems));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Lưu giỏ hàng vào localStorage
+    }
+  }, [cartItems]);
 
   // Hàm thêm sản phẩm vào giỏ hàng
   const addToCart = (product) => {
@@ -59,6 +71,12 @@ function App() {
     setIsPopupOpen(false);
   };
 
+  // Lọc sản phẩm theo brand hoặc category (Ví dụ: lọc theo tên thương hiệu)
+  const filterProductsByBrand = (brandName) => {
+    const filtered = allProducts.filter(product => product.brand === brandName);
+    setFilteredProducts(filtered);
+  };
+
   return (
     <Router>
       <div>
@@ -81,12 +99,8 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           {/* Trang lịch sử đơn hàng */}
           <Route path="/order-history" element={<OrderHistory />} />
-          {/* Các trang quản trị */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/users" element={<ManageUsers />} />
-          <Route path="/admin/products" element={<ManageProducts />} />
           {/* Trang sản phẩm theo thương hiệu */}
-          <Route path="/brand-product/:brand_name" element={<BrandProducts />} />
+          <Route path="/brand-product/:brand_name" element={<BrandProducts filterProducts={filterProductsByBrand} />} />
         </Routes>
         {/* Footer */}
         <Footer />

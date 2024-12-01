@@ -307,9 +307,9 @@ body, html {
   margin-right: 10px; /* Khoảng cách giữa biểu tượng và chữ */
   font-size: 20px; /* Kích thước biểu tượng */
 }
-/* Product Category and Brand Pages Styling */
+Product Category and Brand Pages Styling
 
-/* General container for product list */
+General container for product list
 .product-list-container {
   display: flex;
   flex-wrap: wrap;
