@@ -1,58 +1,55 @@
+// OrderHistory.jsx
 import React, { useState, useEffect } from 'react';
-import './OrderHistory.css';
+import axios from 'axios';
+import './OrderHistory.css'; // Tạo file CSS cho giao diện
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Lấy lịch sử đơn hàng từ API
+  const user = JSON.parse(localStorage.getItem('user')); // Lấy thông tin người dùng
+
   useEffect(() => {
-    const fetchOrderHistory = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const response = await fetch(`http://localhost:5000/api/orders/${user.acc_id}`);
-        const data = await response.json();
-        setOrders(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Lỗi khi lấy lịch sử đơn hàng:", error);
-      }
-    };
-
-    fetchOrderHistory();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    if (user) {
+      axios.get(`http://localhost:5000/api/order/history?acc_id=${user.acc_id}`)
+        .then(response => {
+          setOrders(response.data); // Lưu đơn hàng vào state
+        })
+        .catch(error => {
+          console.error('Error fetching order history:', error);
+        });
+    }
+  }, [user]);
 
   return (
     <div className="order-history">
-      <h1>Lịch sử đặt hàng</h1>
-      <div className="order-list">
-        {orders.length === 0 ? (
-          <p>Chưa có đơn hàng nào.</p>
-        ) : (
-          orders.map(order => (
-            <div key={order.order_id} className="order-item">
-              <h3>Đơn hàng #{order.order_id}</h3>
-              <p>Ngày đặt: {new Date(order.created_at).toLocaleDateString()}</p>
-              <p>Tổng tiền: {order.total} VND</p>
-              <p>Trạng thái: {order.pay_status}</p>
-              <p>Địa chỉ giao hàng: {order.address}</p>
-              <div className="order-items">
-                {order.order_items.map(item => (
-                  <div key={item.product_id} className="order-item-details">
-                    <p>Sản phẩm: {item.product_name}</p>
-                    <p>Số lượng: {item.quantity_items}</p>
-                    <p>Giá: {item.price} VND</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+      <h2>Lịch sử đặt hàng</h2>
+      {orders.length > 0 ? (
+        <table className="order-table">
+          <thead>
+            <tr>
+              <th>Mã đơn hàng</th>
+              <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái thanh toán</th>
+              <th>Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map(order => (
+              <tr key={order.order_id}>
+                <td>{order.order_id}</td>
+                <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                <td>{order.total} VND</td>
+                <td>{order.pay_status}</td>
+                <td>
+                  <button className="view-details-btn">Xem chi tiết</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Chưa có đơn hàng nào.</p>
+      )}
     </div>
   );
 };

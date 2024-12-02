@@ -93,6 +93,18 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
     setUser(null);
   };
 
+  // Hàm xử lý khi người dùng chọn danh mục
+  const handleCategoryFilter = async (categoryId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/products?category=${categoryId}`);
+      const data = await response.json();
+      setFilteredProducts(data);
+      console.log(`Sản phẩm theo danh mục: ${categoryId}`);
+    } catch (error) {
+      console.error("Lỗi khi lọc sản phẩm theo danh mục:", error);
+    }
+  };
+
   return (
     <header className="header">
       <nav className="navbar">
@@ -112,23 +124,24 @@ const Navbar = ({ cartItems, setCartItems, setFilteredProducts }) => {
         <ul className="nav-links">
           <li><Link to="/">TRANG CHỦ</Link></li>
           <li className="dropdown">
-            <Link to="/products" onClick={toggleProductDropdown}>SẢN PHẨM</Link>
+            <Link to="#" onClick={toggleProductDropdown}>DANH MỤC SẢN PHẨM</Link>
             {productDropdownOpen && (
               <ul className="dropdown-menu">
                 {categories.map(category => (
-                  <li key={category.cate_name}>
-                    <Link to={`/category/${category.cate_name}`}>{category.cate_name}</Link>
+                  <li key={category.cate_id}>
+                    <button onClick={() => handleCategoryFilter(category.cate_id)}>{category.cate_id}</button>
                   </li>
                 ))}
               </ul>
             )}
           </li>
+
           <li className="dropdown">
             <Link to="#" onClick={toggleBrandDropdown}>THƯƠNG HIỆU</Link>
             {brandDropdownOpen && (
               <ul className="dropdown-menu">
                 {brands.map((brand) => (
-                  <li key={brand.brand_name}>
+                  <li key={brand.brand_id}>
                     <Link to={`/brand-product/${brand.brand_name}`}>{brand.brand_name}</Link>
                   </li>
                 ))}
