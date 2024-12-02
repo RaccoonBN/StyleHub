@@ -2,7 +2,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mysql2": "^3.11.4",
+    "mysql2": "^3.11.5",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1"
   },

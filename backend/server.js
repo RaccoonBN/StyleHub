@@ -11,6 +11,7 @@ const reviewRoutes = require('./routes/review');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/order');
 const vnpayRoutes = require('./routes/vnpay');
+const orderHistoryRoutes = require('./routes/orderHistoryRoutes');
 const app = express();
 const port = 5000;
 
@@ -50,6 +51,7 @@ app.use('/api/category', categoryRouter);
 app.use('/api', productRoutes);
 app.use('/api', reviewRoutes);
 app.use('/api', orderRoutes);
+app.use('/api', orderHistoryRoutes);
 
 app.use('/api/vnpay', vnpayRoutes);
 

@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Products from './components/Products';
 import AuthPopup from './components/AuthPopup';
 import CheckoutPage from './components/CheckoutPage';
-import OrderHistory from './components/OrderHistory';
+import OrderHistory from './components/OrderHistory'; // Import component OrderHistory
 import BrandProducts from './components/BrandProducts'; 
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
   const [allProducts, setAllProducts] = useState([]); // Quản lý tất cả sản phẩm
   const [filteredProducts, setFilteredProducts] = useState([]); // Quản lý các sản phẩm đã lọc
   const [isPopupOpen, setIsPopupOpen] = useState(false); // Quản lý trạng thái Popup
+  const userId = 6; // Thay bằng ID người dùng thực tế
 
   // Lấy dữ liệu sản phẩm từ API khi component được render lần đầu
   useEffect(() => {
@@ -97,8 +98,8 @@ function App() {
           <Route path="/products" element={<Products allProducts={allProducts} filteredProducts={filteredProducts} addToCart={addToCart} />} />
           {/* Trang thanh toán */}
           <Route path="/checkout" element={<CheckoutPage />} />
-          {/* Trang lịch sử đơn hàng */}
-          <Route path="/order-history" element={<OrderHistory />} />
+          {/* Trang lịch sử đơn hàng với userId */}
+          <Route path="/order-history" element={<OrderHistory userId={userId} />} />
           {/* Trang sản phẩm theo thương hiệu */}
           <Route path="/brand-product/:brand_name" element={<BrandProducts filterProducts={filterProductsByBrand} />} />
         </Routes>
