@@ -4,19 +4,27 @@ import './OrderHistory.css';
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Lấy lịch sử đơn hàng từ API
+
   useEffect(() => {
-<<<<<<< Updated upstream
     const fetchOrderHistory = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.acc_id) {
+          throw new Error('User chưa đăng nhập hoặc thiếu thông tin acc_id');
+        }
+
         const response = await fetch(`http://localhost:5000/api/orders/${user.acc_id}`);
+        if (!response.ok) {
+          throw new Error(`Lỗi khi gọi API: ${response.statusText}`);
+        }
+
         const data = await response.json();
         setOrders(data);
-        setLoading(false);
       } catch (error) {
         console.error("Lỗi khi lấy lịch sử đơn hàng:", error);
+        setOrders([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -26,17 +34,6 @@ const OrderHistory = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-=======
-    // Lấy dữ liệu lịch sử đơn hàng từ backend
-    axios.get(`http://localhost:5000/api/order-history/${acc_id}`)
-      .then(response => {
-        setOrders(response.data);
-      })
-      .catch(error => {
-        console.error('Lỗi khi tải lịch sử đơn hàng', error);
-      });
-  }, [acc_id]);
->>>>>>> Stashed changes
 
   return (
     <div className="order-history">
