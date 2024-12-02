@@ -7,6 +7,7 @@ body, html {
   width: 98%; /* Chiều rộng 100% */
   position: fixed; /* Giữ thanh điều hướng ở vị trí cố định */
   display: flex;
+  top: 0;
   justify-content: space-between; /* Căn đều không gian giữa logo và menu */
   align-items: center; /* Căn giữa */
   padding: 15px 20px;
