@@ -8,16 +8,16 @@ import ProductDetail from './ProductDetail'; // Import ProductDetail component
 // Sử dụng require.context để lấy tất cả hình ảnh
 const images = require.context('../assets', false, /\.(png|jpe?g|svg)$/);
 
-const Products = ({ allProducts = [], filteredProducts = [], addToCart }) => {
+const Products = ({ allProducts = [], filteredProducts = [], addToCart, categories = [], brands = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [brandName, setBrandName] = useState('');
   const [categoryName, setCategoryName] = useState('');
-  const [showProductDetail, setShowProductDetail] = useState(false); // Thêm state này để điều khiển hiển thị popup
+  const [showProductDetail, setShowProductDetail] = useState(false); 
+  
 
   const onProductClick = (product) => {
-    // Xử lý khi người dùng click vào sản phẩm (ví dụ, hiển thị chi tiết sản phẩm)
     setSelectedProduct(product); // Cập nhật selectedProduct để hiển thị trong popup
     fetchBrandName(product.brand_id); // Fetch tên thương hiệu
     fetchCategoryName(product.cate_id); // Fetch tên danh mục

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .order-history {
   padding: 20px;
   background-color: #f9f9f9;
@@ -40,3 +41,43 @@ h1 {
 .order-item-details p {
   margin: 5px 0;
 }
+=======
+.order-history-container {
+    padding: 20px;
+    height: 800px;
+  }
+  .order-history-container h2 {
+    margin-top: 90px;
+  }
+  .order-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-item {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+  }
+  
+  .order-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 50px;
+  }
+  
+  .order-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .order-details img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .order-details p {
+    margin: 5px 0;
+  }
+  
+>>>>>>> Stashed changes

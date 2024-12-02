@@ -1,10 +1,11 @@
-/* src/components/Footer.css */
 .footer {
     background-color: #000; /* Màu nền là đen */
     color: #fff; /* Màu chữ là trắng */
     padding: 15px; /* Khoảng cách bên trong */
     text-align: center; /* Canh giữa nội dung */
     font-family: 'Montserrat', sans-serif; /* Sử dụng font Montserrat */
+    bottom: 0; /* Đặt footer ở đáy màn hình */
+    width: 100%; /* Chiều rộng đầy đủ */
 }
 
 .footer-brand {

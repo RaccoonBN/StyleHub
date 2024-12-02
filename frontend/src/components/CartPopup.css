@@ -1,4 +1,3 @@
-/* src/components/CartPopup.css */
 
 /* Màn hình phủ khi mở giỏ hàng */
 .cart-popup-overlay {
@@ -52,12 +51,13 @@ input[type="checkbox"]:focus {
 .cart-popup {
   background: white;
   width: 90%;
+  margin-top: 50px;
   max-width: 500px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
-  max-height: 600px; /* Đặt chiều cao tối đa cho popup */
+  max-height: 550px; /* Đặt chiều cao tối đa cho popup */
   overflow: hidden; /* Ẩn các phần tử ngoài giới hạn */
 }
 
@@ -78,7 +78,7 @@ input[type="checkbox"]:focus {
 /* Danh sách các sản phẩm trong giỏ hàng */
 .cart-items {
   margin-top: 20px;
-  max-height: 400px; /* Giới hạn chiều cao cho danh sách sản phẩm */
+  max-height: 300px; /* Giới hạn chiều cao cho danh sách sản phẩm */
   overflow-y: auto; /* Hiển thị thanh cuộn theo chiều dọc */
   padding: 10px; /* Khoảng cách giữa các sản phẩm */
 }

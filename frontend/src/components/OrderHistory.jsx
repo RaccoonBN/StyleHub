@@ -7,6 +7,7 @@ const OrderHistory = () => {
   
   // Lấy lịch sử đơn hàng từ API
   useEffect(() => {
+<<<<<<< Updated upstream
     const fetchOrderHistory = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -25,6 +26,17 @@ const OrderHistory = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+=======
+    // Lấy dữ liệu lịch sử đơn hàng từ backend
+    axios.get(`http://localhost:5000/api/order-history/${acc_id}`)
+      .then(response => {
+        setOrders(response.data);
+      })
+      .catch(error => {
+        console.error('Lỗi khi tải lịch sử đơn hàng', error);
+      });
+  }, [acc_id]);
+>>>>>>> Stashed changes
 
   return (
     <div className="order-history">
